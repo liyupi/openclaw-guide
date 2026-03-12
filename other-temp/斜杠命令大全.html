@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw 斜杠命令大全 — 小龙虾聊天指令速查</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0c0b;
+  --bg-card: #1a1614;
+  --bg-card-hover: #231f1c;
+  --bg-code: #1e1a17;
+  --bg-code-block: #161210;
+  --border: #3a3230;
+  --text: #e8ddd5;
+  --text-muted: #8B7F77;
+  --text-dim: #b0a69e;
+  --accent: #FF5A2D;
+  --accent-dim: #D14A22;
+  --accent-bright: #FF7A3D;
+  --info: #FF8A5B;
+  --success: #2FBF71;
+  --warn: #FFB020;
+  --error: #E23D2D;
+  --blue: #5B9CF6;
+  --purple: #A78BFA;
+  --pink: #FF6B9D;
+  --cyan: #00D2FF;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans SC', system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ── Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(14,12,11,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: center; height: 56px; gap: 16px;
+}
+.logo {
+  font-size: 18px; font-weight: 900; color: var(--accent);
+  text-decoration: none; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.logo span { color: var(--text-muted); font-weight: 400; font-size: 13px; }
+.header-links { margin-left: auto; display: flex; gap: 16px; }
+.header-links a {
+  color: var(--text-dim); text-decoration: none; font-size: 13px; transition: color .2s;
+}
+.header-links a:hover { color: var(--accent); }
+
+/* ── Search ── */
+.search-wrap {
+  max-width: 960px; margin: 0 auto; padding: 20px 24px 0;
+}
+.search-box {
+  position: relative; max-width: 480px;
+}
+.search-box input {
+  width: 100%; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 999px; padding: 10px 20px 10px 42px;
+  font-size: 14px; color: var(--text); font-family: var(--sans);
+  transition: border-color .2s, box-shadow .2s; outline: none;
+}
+.search-box input:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,90,45,.15);
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none; font-size: 15px;
+}
+.search-shortcut {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: var(--bg-code); border: 1px solid var(--border); border-radius: 4px;
+  padding: 2px 8px; font-size: 11px; color: var(--text-muted); font-family: var(--mono);
+}
+
+/* ── Layout ── */
+.page-wrap {
+  max-width: 960px; margin: 0 auto;
+  display: flex; gap: 28px; padding: 20px 24px 80px;
+}
+
+/* ── TOC ── */
+.toc {
+  width: 190px; flex-shrink: 0; position: sticky; top: 80px;
+  height: calc(100vh - 110px); overflow-y: auto; padding-right: 6px; font-size: 12px;
+}
+.toc::-webkit-scrollbar { width: 3px; }
+.toc::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.toc-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--text-muted); margin-bottom: 8px;
+}
+.toc a {
+  display: block; padding: 3px 10px; color: var(--text-muted);
+  text-decoration: none; border-left: 2px solid transparent;
+  transition: all .15s; line-height: 1.5; margin-bottom: 1px;
+}
+.toc a:hover { color: var(--text); border-left-color: var(--border); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); }
+
+/* ── Main ── */
+.main { flex: 1; min-width: 0; }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255,90,45,.05) 100%);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 36px 32px; margin-bottom: 24px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(255,90,45,.1) 0%, transparent 70%);
+}
+.hero h1 { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
+.hero h1 em { color: var(--accent); font-style: normal; }
+.hero p { color: var(--text-dim); font-size: 14px; max-width: 580px; }
+.hero-meta {
+  margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;
+}
+.hero-badge {
+  background: var(--bg-code); border: 1px solid var(--border); border-radius: 999px;
+  padding: 3px 12px; font-size: 12px; color: var(--text-dim); font-family: var(--mono);
+}
+
+/* ── Filter ── */
+.filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px;
+  padding: 5px 14px; font-size: 12px; color: var(--text-dim); cursor: pointer;
+  font-family: var(--sans); transition: all .2s; white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--text); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+
+/* ── Section ── */
+.section { margin-bottom: 32px; scroll-margin-top: 80px; }
+.section-title {
+  font-size: 18px; font-weight: 700; margin-bottom: 14px;
+  padding-bottom: 6px; border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── Command card ── */
+.cmd-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 10px; overflow: hidden; transition: border-color .2s;
+}
+.cmd-card:hover { border-color: var(--accent-dim); }
+
+.cmd-header {
+  padding: 14px 18px; cursor: pointer;
+  display: flex; align-items: flex-start; gap: 12px; user-select: none;
+}
+.cmd-toggle {
+  color: var(--text-muted); font-size: 11px; margin-top: 4px;
+  transition: transform .2s; flex-shrink: 0; width: 14px;
+}
+.cmd-card.open .cmd-toggle { transform: rotate(90deg); }
+
+.cmd-info { flex: 1; min-width: 0; }
+.cmd-name {
+  font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--accent-bright);
+}
+.cmd-name .cmd-alias {
+  color: var(--text-muted); font-weight: 400; font-size: 12px;
+}
+.cmd-desc { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+
+.cmd-badges { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; margin-top: 2px; }
+.cmd-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 999px;
+  font-weight: 500; letter-spacing: .03em;
+}
+.badge-core { background: rgba(255,90,45,.12); color: var(--accent-bright); }
+.badge-session { background: rgba(0,210,255,.12); color: var(--cyan); }
+.badge-model { background: rgba(47,191,113,.12); color: var(--success); }
+.badge-debug { background: rgba(167,139,250,.12); color: var(--purple); }
+.badge-discord { background: rgba(88,101,242,.15); color: #7983f5; }
+.badge-agent { background: rgba(255,107,157,.12); color: var(--pink); }
+.badge-output { background: rgba(255,176,32,.12); color: var(--warn); }
+.badge-admin { background: rgba(226,61,45,.12); color: var(--error); }
+.badge-tts { background: rgba(91,156,246,.12); color: var(--blue); }
+
+.cmd-body {
+  display: none; padding: 0 18px 18px 44px; font-size: 13px; line-height: 1.8;
+}
+.cmd-card.open .cmd-body { display: block; }
+
+.cmd-body h4 {
+  font-size: 13px; font-weight: 700; color: var(--info); margin: 10px 0 4px;
+}
+.cmd-body h4:first-child { margin-top: 0; }
+.cmd-body p { color: var(--text-dim); margin-bottom: 6px; }
+.cmd-body ul { padding-left: 18px; color: var(--text-dim); margin-bottom: 6px; }
+.cmd-body li { margin-bottom: 2px; }
+.cmd-body code {
+  background: var(--bg-code); padding: 1px 6px; border-radius: 4px;
+  font-family: var(--mono); font-size: 12px; color: var(--accent-bright);
+}
+
+.example-block {
+  background: var(--bg-code-block); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 14px; margin: 6px 0 8px; font-family: var(--mono); font-size: 12px;
+  color: var(--text-dim); overflow-x: auto; white-space: pre; line-height: 1.7;
+}
+.example-block .prompt { color: var(--success); }
+.example-block .comment { color: var(--text-muted); }
+.example-block .reply { color: var(--blue); }
+
+.callout {
+  border-radius: var(--radius-sm); padding: 10px 14px; margin: 8px 0;
+  font-size: 12px; display: flex; gap: 8px; align-items: flex-start; line-height: 1.6;
+}
+.callout-warn { background: rgba(255,176,32,.06); border: 1px solid rgba(255,176,32,.2); color: var(--warn); }
+.callout-tip { background: rgba(47,191,113,.06); border: 1px solid rgba(47,191,113,.2); color: var(--success); }
+.callout-danger { background: rgba(226,61,45,.06); border: 1px solid rgba(226,61,45,.2); color: var(--error); }
+.callout-info { background: rgba(91,156,246,.06); border: 1px solid rgba(91,156,246,.2); color: var(--blue); }
+
+/* ── No results ── */
+.no-results {
+  text-align: center; padding: 50px 20px; color: var(--text-muted);
+  font-size: 15px; display: none;
+}
+.no-results.visible { display: block; }
+
+/* ── Back to top ── */
+.back-top {
+  position: fixed; bottom: 28px; right: 28px; width: 40px; height: 40px;
+  background: var(--accent); color: #fff; border: none; border-radius: 50%;
+  font-size: 18px; cursor: pointer; opacity: 0; transform: translateY(16px);
+  transition: opacity .3s, transform .3s; z-index: 99;
+  display: flex; align-items: center; justify-content: center;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Footer ── */
+.site-footer {
+  text-align: center; padding: 24px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--text-muted);
+}
+.site-footer a { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 800px) {
+  .toc { display: none; }
+  .page-wrap { padding: 16px 16px 60px; }
+  .hero { padding: 24px 18px; }
+  .hero h1 { font-size: 22px; }
+  .cmd-body { padding-left: 18px; }
+  .search-shortcut { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">🦞 OpenClaw <span>斜杠命令大全</span></a>
+    <div class="header-links">
+      <a href="index.html">CLI 命令大全</a>
+      <a href="feishu.html">飞书指南</a>
+      <a href="https://docs.openclaw.ai/tools/slash-commands" target="_blank">英文原文 ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索命令、功能、关键词…" autocomplete="off">
+    <span class="search-shortcut">Ctrl+K</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+<aside class="toc">
+  <div class="toc-title">目录</div>
+  <a href="#sec-core">🔥 核心高频</a>
+  <a href="#sec-session">💬 会话管理</a>
+  <a href="#sec-model">🧠 模型切换</a>
+  <a href="#sec-output">📊 输出控制</a>
+  <a href="#sec-agent">🤖 Agent 管理</a>
+  <a href="#sec-discord">🎮 Discord 专属</a>
+  <a href="#sec-admin">🔧 管理员命令</a>
+  <a href="#sec-bash">🖥️ Shell 命令</a>
+  <a href="#sec-misc">📚 其他</a>
+  <a href="#sec-concepts">📖 核心概念</a>
+</aside>
+
+<main class="main">
+
+<div class="hero">
+  <h1>⚡ <em>斜杠命令</em>速查手册</h1>
+  <p>在聊天中输入 <code>/命令</code> 就能操控小龙虾。本文整理了所有斜杠命令的通俗中文说明，让你一看就懂、随查随用。</p>
+  <div class="hero-meta">
+    <span class="hero-badge">在聊天窗口中输入</span>
+    <span class="hero-badge">支持 WhatsApp / Telegram / Discord / Slack / 飞书 等</span>
+  </div>
+</div>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="core">核心高频</button>
+  <button class="filter-btn" data-filter="session">会话</button>
+  <button class="filter-btn" data-filter="model">模型</button>
+  <button class="filter-btn" data-filter="output">输出</button>
+  <button class="filter-btn" data-filter="agent">Agent</button>
+  <button class="filter-btn" data-filter="discord">Discord</button>
+  <button class="filter-btn" data-filter="admin">管理员</button>
+  <button class="filter-btn" data-filter="bash">Shell</button>
+</div>
+
+<div class="no-results" id="noResults">
+  <span style="font-size:40px;display:block;margin-bottom:8px">🦞</span>
+  没找到匹配的命令，换个关键词试试？
+</div>
+
+<!-- ====== 核心高频 ====== -->
+<div class="section" id="sec-core">
+  <div class="section-title">🔥 核心高频命令</div>
+
+  <div class="cmd-card" data-tags="core session" data-keywords="新对话 新建 重置 清空 new reset 开始 新会话">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/new <span class="cmd-alias">或 /reset</span></div>
+        <div class="cmd-desc">开始一段全新的对话，清空当前会话记忆</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>聊天聊了很久、上下文乱了、或者想换个话题？发 <code>/new</code> 就是"翻开新一页"——小龙虾会忘掉之前的对话，从头开始。</p>
+      <h4>用法</h4>
+      <ul>
+        <li><code>/new</code> — 直接开始新对话</li>
+        <li><code>/new claude-sonnet-4-20250514</code> — 开始新对话，顺便切换到指定模型</li>
+        <li><code>/reset</code> — 效果和 <code>/new</code> 一样</li>
+      </ul>
+      <div class="example-block"><span class="comment"># 直接重置</span>
+<span class="prompt">你发送：</span>/new
+<span class="reply">🦞 回复：</span>Session reset. Ready for a new conversation.
+
+<span class="comment"># 重置并切换模型</span>
+<span class="prompt">你发送：</span>/new gpt-4o
+<span class="reply">🦞 回复：</span>Session reset. Model set to gpt-4o.</div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="帮助 help 命令列表 怎么用">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/help</div>
+        <div class="cmd-desc">查看所有可用命令的帮助信息</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>忘了有什么命令？发 <code>/help</code> 小龙虾就会列出所有可用的命令和简要说明。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/help</div>
+      <div class="callout callout-tip">
+        <span>💡</span> <code>/help</code> 可以嵌入到普通消息中使用，比如 <code>帮我查一下 /help 有什么命令</code>，帮助信息会单独返回，剩余的文字照常处理。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="状态 status 健康 运行 用量 quota 检查">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/status</div>
+        <div class="cmd-desc">查看小龙虾当前状态（模型、用量、连接等）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>相当于给小龙虾做个快速"体检"——看看当前用的什么模型、API 额度还剩多少、连接是否正常。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/status
+<span class="reply">🦞 回复：</span>模型、连接状态、API 用量等信息</div>
+      <div class="callout callout-info">
+        <span>📝</span> 也可以内嵌使用：<code>帮我看看 /status 然后继续回答上面的问题</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="命令 commands 列表 查看 可用">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/commands</div>
+        <div class="cmd-desc">列出所有已注册的命令</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>和 <code>/help</code> 类似，列出当前可用的所有命令。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="我是谁 whoami id 身份 用户名 sender">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/whoami <span class="cmd-alias">别名：/id</span></div>
+        <div class="cmd-desc">查看你在当前渠道的身份标识（Sender ID）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>查看小龙虾是怎么认识你的——返回你在当前聊天平台上的用户 ID，设置白名单时会用到。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/whoami
+<span class="reply">🦞 回复：</span>你的 Sender ID（如 user:123456）</div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="停止 stop 中断 取消 打断">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/stop</div>
+        <div class="cmd-desc">停止当前正在运行的任务</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>小龙虾正在跑一个很长的任务但你不想等了？发 <code>/stop</code> 立刻打断它。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="技能 skill 执行 运行 工具">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/skill &lt;技能名&gt; [参数]</div>
+        <div class="cmd-desc">直接调用某个技能</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-core">高频</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>跳过 AI 判断，直接告诉小龙虾"用某个技能做事"——比如直接搜索网页、发邮件等。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/skill web-search 今天天气</div>
+      <div class="callout callout-info">
+        <span>📝</span> 标记为 <code>user-invocable</code> 的技能会自动注册为斜杠命令（如 <code>/web_search</code>），可以直接用。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 会话管理 ====== -->
+<div class="section" id="sec-session">
+  <div class="section-title">💬 会话管理</div>
+
+  <div class="cmd-card" data-tags="session" data-keywords="压缩 compact 上下文 摘要 记忆 缩短 长对话">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/compact [指令]</div>
+        <div class="cmd-desc">压缩当前对话上下文（解决对话过长的问题）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-session">会话</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>聊了太久，上下文变得很长很贵？<code>/compact</code> 会把前面的对话内容"浓缩"成摘要，保留核心信息但大幅缩短上下文长度。</p>
+      <div class="example-block"><span class="comment"># 直接压缩</span>
+<span class="prompt">你发送：</span>/compact
+
+<span class="comment"># 给压缩过程一些指示</span>
+<span class="prompt">你发送：</span>/compact 请重点保留关于数据库设计的讨论</div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="session" data-keywords="导出 export 保存 html 会话记录 对话记录">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/export-session [路径] <span class="cmd-alias">别名：/export</span></div>
+        <div class="cmd-desc">将当前对话导出为 HTML 文件</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-session">会话</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>想保存聊天记录？这个命令会把完整的对话（包括系统提示词）导出成一个好看的 HTML 文件。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/export-session
+<span class="prompt">你发送：</span>/export ~/chats/my-session.html</div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="session" data-keywords="上下文 context 大小 token 系统提示 消耗 占用">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/context [list|detail|json]</div>
+        <div class="cmd-desc">查看当前上下文的组成和大小</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-session">会话</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>好奇小龙虾的"脑容量"被什么占了？这个命令告诉你系统提示词、工具、技能各占了多少 token。</p>
+      <ul>
+        <li><code>/context</code> — 概览</li>
+        <li><code>/context detail</code> — 详细分类（每个文件、工具、技能的大小）</li>
+        <li><code>/context json</code> — JSON 格式输出</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="session" data-keywords="队列 queue 消息排队 debounce 防抖 批量">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/queue [选项]</div>
+        <div class="cmd-desc">管理消息队列设置（防抖、容量、丢弃策略）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-session">会话</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>连续发了好几条消息？<code>/queue</code> 控制小龙虾怎么处理它们——是等一下合并处理，还是逐条回复。</p>
+      <div class="example-block"><span class="comment"># 查看当前队列设置</span>
+<span class="prompt">你发送：</span>/queue
+
+<span class="comment"># 设置防抖2秒、最多25条、超出的做摘要</span>
+<span class="prompt">你发送：</span>/queue debounce:2s cap:25 drop:summarize</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 模型切换 ====== -->
+<div class="section" id="sec-model">
+  <div class="section-title">🧠 模型切换</div>
+
+  <div class="cmd-card" data-tags="model" data-keywords="模型 model 切换 选择 查看 list 列表 status models">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/model [模型名|编号|list|status] <span class="cmd-alias">别名：/models</span></div>
+        <div class="cmd-desc">查看或切换当前使用的 AI 模型</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-model">模型</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>想换个"大脑"？用 <code>/model</code> 切换小龙虾使用的 AI 模型——比如从 Claude 换到 GPT。</p>
+      <h4>用法</h4>
+      <ul>
+        <li><code>/model</code> — 显示模型列表，带编号的选择器</li>
+        <li><code>/model list</code> — 列出所有可用模型</li>
+        <li><code>/model 3</code> — 选择列表中的第 3 个模型</li>
+        <li><code>/model gpt-4o</code> — 直接指定模型名</li>
+        <li><code>/model openai/gpt-5.2</code> — 指定提供商/模型</li>
+        <li><code>/model status</code> — 查看模型详细状态（含认证、端点信息）</li>
+      </ul>
+      <div class="example-block"><span class="prompt">你发送：</span>/model
+<span class="reply">🦞 回复：</span>1. Claude Sonnet  2. GPT-4o  3. Gemini Pro ...
+
+<span class="prompt">你发送：</span>/model 1
+<span class="reply">🦞 回复：</span>Model set to claude-sonnet-4-20250514
+
+<span class="prompt">你发送：</span>/model gpt-4o
+<span class="reply">🦞 回复：</span>Model set to gpt-4o</div>
+      <div class="callout callout-info">
+        <span>📝</span> 在 Discord 上，<code>/model</code> 会弹出交互式下拉菜单，可以选提供商和模型。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="model" data-keywords="思考 think thinking 深度 推理 budget 预算">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/think &lt;级别&gt; <span class="cmd-alias">别名：/thinking, /t</span></div>
+        <div class="cmd-desc">控制 AI 的"思考深度"（越高越仔细，也越慢越贵）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-model">模型</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>让 AI 多想想再回答，还是快速给结果？<code>/think</code> 控制思考的投入程度。级别越高，回答越深入但速度越慢、花费越多。</p>
+      <p><strong>注意</strong>：这是一个"指令"——可以单独发也可以嵌入到消息中。</p>
+      <div class="example-block"><span class="comment"># 作为单独指令（设置会持续生效）</span>
+<span class="prompt">你发送：</span>/think high
+
+<span class="comment"># 嵌入到消息中（只对这条消息生效）</span>
+<span class="prompt">你发送：</span>/think high 帮我分析这个复杂的算法
+
+<span class="comment"># 关闭深度思考</span>
+<span class="prompt">你发送：</span>/think off</div>
+      <div class="callout callout-info">
+        <span>📝</span> 可用的级别取决于模型/提供商，常见有 <code>low</code>、<code>medium</code>、<code>high</code>。部分模型不支持此功能。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 输出控制 ====== -->
+<div class="section" id="sec-output">
+  <div class="section-title">📊 输出控制</div>
+
+  <div class="cmd-card" data-tags="output" data-keywords="详细 verbose 调试 debug 详情 工具输出 错误信息">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/verbose on|full|off <span class="cmd-alias">别名：/v</span></div>
+        <div class="cmd-desc">控制输出的详细程度（显示工具调用细节、错误详情等）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-output">输出</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>正常模式下小龙虾只告诉你结果。开了 <code>/verbose</code> 就像开了"幕后花絮"——能看到工具调用详情、错误信息等。排查问题时很有用。</p>
+      <ul>
+        <li><code>/verbose off</code> — 关闭（默认，只看结果）</li>
+        <li><code>/verbose on</code> — 显示工具调用详情和错误信息</li>
+        <li><code>/verbose full</code> — 显示一切（最详细）</li>
+      </ul>
+      <div class="example-block"><span class="prompt">你发送：</span>/verbose on
+<span class="prompt">你发送：</span>/v full</div>
+      <div class="callout callout-warn">
+        <span>⚠️</span> <strong>群聊慎用！</strong>开启后可能暴露内部工具输出和推理过程。建议仅在私聊中调试使用。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="output" data-keywords="推理 reasoning 思维链 思考过程 展示">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/reasoning on|off|stream <span class="cmd-alias">别名：/reason</span></div>
+        <div class="cmd-desc">控制是否显示 AI 的推理过程</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-output">输出</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>想看看 AI 是怎么一步步想出答案的？开启后会额外发一条以"Reasoning:"开头的消息，展示思维链。</p>
+      <ul>
+        <li><code>/reasoning on</code> — 显示推理过程（单独消息）</li>
+        <li><code>/reasoning stream</code> — 流式显示推理（仅 Telegram 草稿支持）</li>
+        <li><code>/reasoning off</code> — 关闭</li>
+      </ul>
+      <div class="callout callout-warn">
+        <span>⚠️</span> <strong>群聊慎用！</strong>推理内容可能包含你不想公开的内部信息。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="output" data-keywords="用量 usage 花费 cost token 消耗 统计 费用">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/usage off|tokens|full|cost</div>
+        <div class="cmd-desc">控制是否在回复后显示 Token 消耗和费用</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-output">输出</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>想知道每条回复花了多少 Token 和钱？打开这个功能，小龙虾会在每次回复后附上用量统计。</p>
+      <ul>
+        <li><code>/usage off</code> — 关闭用量显示</li>
+        <li><code>/usage tokens</code> — 只显示 Token 数</li>
+        <li><code>/usage full</code> — 显示完整用量信息</li>
+        <li><code>/usage cost</code> — 显示本地费用汇总</li>
+      </ul>
+      <div class="example-block"><span class="prompt">你发送：</span>/usage full
+<span class="comment"># 之后每条回复末尾都会显示 token 消耗</span></div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="output" data-keywords="tts 语音 朗读 text-to-speech 音频 播报">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/tts off|always|inbound|tagged|status|provider|limit|summary|audio</div>
+        <div class="cmd-desc">控制文字转语音功能（让小龙虾"说出来"）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-tts">语音</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>让回复不仅是文字，还能自动转成语音播放。适合不方便看屏幕的时候使用。</p>
+      <ul>
+        <li><code>/tts always</code> — 所有回复都转语音</li>
+        <li><code>/tts off</code> — 关闭语音</li>
+        <li><code>/tts status</code> — 查看当前 TTS 状态</li>
+      </ul>
+      <div class="callout callout-info">
+        <span>📝</span> Discord 上原生命令名为 <code>/voice</code>（因为 Discord 保留了 <code>/tts</code>），但文本方式发 <code>/tts</code> 依然有效。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="output" data-keywords="发送 send 投递 转发 回复渠道 on off">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/send on|off|inherit</div>
+        <div class="cmd-desc">控制是否将回复投递给目标用户（仅 Owner）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-output">输出</span><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>有时候你想让 AI 帮你编辑消息但先不发出去。<code>/send off</code> 就是"只给我看，别发出去"。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== Agent 管理 ====== -->
+<div class="section" id="sec-agent">
+  <div class="section-title">🤖 Agent / 子代理管理</div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="子代理 subagents 列表 kill 杀死 终止 日志 log 信息 info 发送 send 生成 spawn">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/subagents list|kill|log|info|send|steer|spawn</div>
+        <div class="cmd-desc">查看、控制、启动当前会话的子代理</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>小龙虾在处理复杂任务时可能会派出"小弟"（子代理）。这个命令让你管理这些小弟。</p>
+      <ul>
+        <li><code>/subagents list</code> — 列出当前运行的子代理</li>
+        <li><code>/subagents kill</code> — 终止子代理</li>
+        <li><code>/subagents log</code> — 查看子代理日志</li>
+        <li><code>/subagents info</code> — 查看子代理详情</li>
+        <li><code>/subagents steer</code> — 给子代理新的指示</li>
+        <li><code>/subagents spawn</code> — 手动启动子代理</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="引导 steer tell 指示 重定向 改变方向 中断 控制">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/steer &lt;指示&gt; <span class="cmd-alias">别名：/tell</span></div>
+        <div class="cmd-desc">给正在运行的子代理发送即时指示</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>子代理在做任务的时候，你突然想改方向？<code>/steer</code> 可以"插嘴"——如果子代理还在跑，就立刻改方向；如果已经做完了，就打断重新来。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>/steer 不要用 Python 了，换成 TypeScript</div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="终止 kill 杀死 中断 子代理 强制停止">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/kill [名称]</div>
+        <div class="cmd-desc">立即终止一个或所有正在运行的子代理</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>不废话直接杀掉，没有确认提示。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="acp ide 编辑器 spawn cancel status 运行时 sessions">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/acp spawn|cancel|steer|close|status|set-mode|...</div>
+        <div class="cmd-desc">检查和控制 ACP（IDE 桥接）运行时会话</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>ACP 是 OpenClaw 和 IDE（如 Cursor、VS Code）的桥梁。这个命令让你管理 ACP 会话——启动、关闭、查看状态等。</p>
+      <ul>
+        <li><code>/acp status</code> — 查看 ACP 状态</li>
+        <li><code>/acp spawn</code> — 启动新 ACP 会话</li>
+        <li><code>/acp cancel</code> — 取消会话</li>
+        <li><code>/acp sessions</code> — 列出会话</li>
+        <li><code>/acp doctor</code> — 诊断 ACP 问题</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="审批 approve 允许 拒绝 执行权限 exec 工具调用">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/approve allow-once|allow-always|deny</div>
+        <div class="cmd-desc">处理工具执行的审批请求</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>小龙虾想执行一个需要审批的操作（比如运行命令、修改文件），它会问你"可以吗？"。用这个命令回答。</p>
+      <ul>
+        <li><code>/approve allow-once</code> — 这次允许</li>
+        <li><code>/approve allow-always</code> — 以后都允许这类操作</li>
+        <li><code>/approve deny</code> — 拒绝</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="权限 elevated 提权 exec 执行 安全 控制">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/elevated on|off|ask|full <span class="cmd-alias">别名：/elev</span></div>
+        <div class="cmd-desc">控制工具的权限级别（是否需要审批）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>控制小龙虾执行操作时的权限——是每次都问你、自动执行、还是完全不允许。</p>
+      <ul>
+        <li><code>/elevated off</code> — 关闭提权</li>
+        <li><code>/elevated ask</code> — 每次都问你</li>
+        <li><code>/elevated on</code> — 开启提权</li>
+        <li><code>/elevated full</code> — 完全开放（连执行审批都跳过）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="agent" data-keywords="exec 执行 安全 host 节点 node ask">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/exec [host=... security=... ask=... node=...]</div>
+        <div class="cmd-desc">查看或设置工具执行策略</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-agent">Agent</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>不带参数发 <code>/exec</code> 查看当前策略，带参数修改执行设置。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== Discord 专属 ====== -->
+<div class="section" id="sec-discord">
+  <div class="section-title">🎮 Discord 专属</div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="focus 聚焦 线程 thread 绑定 会话">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/focus &lt;目标&gt;</div>
+        <div class="cmd-desc">将当前 Discord 线程绑定到特定会话/子代理</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">Discord</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>把一个 Discord 线程"锁定"到某个会话上——这个线程里的所有消息都发给指定的 Agent。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="unfocus 解绑 取消 线程 thread">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/unfocus</div>
+        <div class="cmd-desc">解除当前线程的绑定</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">Discord</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>解除 <code>/focus</code> 的绑定，让线程恢复正常路由。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="agents 线程代理 绑定列表 discord thread">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/agents</div>
+        <div class="cmd-desc">列出当前会话中线程绑定的 Agent</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">Discord</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>查看当前会话有哪些线程绑定了哪些 Agent。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="session idle max-age 超时 自动解绑 空闲">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/session idle &lt;时间&gt; 和 /session max-age &lt;时间&gt;</div>
+        <div class="cmd-desc">设置线程绑定的自动过期时间</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">Discord</span></div>
+    </div>
+    <div class="cmd-body">
+      <ul>
+        <li><code>/session idle 30m</code> — 空闲 30 分钟后自动解绑</li>
+        <li><code>/session max-age 2h</code> — 最多存活 2 小时后自动解绑</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="activation 激活 mention 提及 always 群组">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/activation mention|always</div>
+        <div class="cmd-desc">设置群组中机器人的响应模式</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">Discord</span></div>
+    </div>
+    <div class="cmd-body">
+      <ul>
+        <li><code>/activation mention</code> — 只有 @机器人 时才回复（默认）</li>
+        <li><code>/activation always</code> — 每条消息都回复</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="discord" data-keywords="dock 切换 回复渠道 slack telegram discord">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/dock-discord, /dock-telegram, /dock-slack</div>
+        <div class="cmd-desc">将回复渠道切换到指定平台</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-discord">跨平台</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>在 Telegram 里聊天，但想让回复发到 Slack 上？用 <code>/dock-slack</code> 切换。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 管理员命令 ====== -->
+<div class="section" id="sec-admin">
+  <div class="section-title">🔧 管理员命令</div>
+
+  <div class="cmd-card" data-tags="admin" data-keywords="debug 调试 运行时 覆盖 show set unset reset 临时 内存">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/debug show|set|unset|reset</div>
+        <div class="cmd-desc">运行时临时覆盖配置（仅存在内存，不写磁盘）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-debug">调试</span><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>想临时改个配置试试效果，但不想影响配置文件？<code>/debug</code> 就是"临时贴纸"——改了立刻生效，重启后消失。</p>
+      <div class="example-block"><span class="comment"># 查看当前临时覆盖</span>
+<span class="prompt">你发送：</span>/debug show
+
+<span class="comment"># 临时设置回复前缀</span>
+<span class="prompt">你发送：</span>/debug set messages.responsePrefix="[test]"
+
+<span class="comment"># 取消某项覆盖</span>
+<span class="prompt">你发送：</span>/debug unset messages.responsePrefix
+
+<span class="comment"># 清除所有临时覆盖</span>
+<span class="prompt">你发送：</span>/debug reset</div>
+      <div class="callout callout-warn">
+        <span>⚠️</span> 需要先在配置中启用 <code>commands.debug: true</code>，仅 Owner 可用。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="admin" data-keywords="config 配置 永久 持久化 读写 磁盘 openclaw.json show get set unset">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/config show|get|set|unset</div>
+        <div class="cmd-desc">在聊天中直接读写配置文件（永久生效）</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>不用 SSH 到服务器编辑文件！直接在聊天里修改 <code>openclaw.json</code> 配置，改完立即生效且重启后还在。</p>
+      <div class="example-block"><span class="comment"># 查看所有配置</span>
+<span class="prompt">你发送：</span>/config show
+
+<span class="comment"># 查看某项配置</span>
+<span class="prompt">你发送：</span>/config get messages.responsePrefix
+
+<span class="comment"># 设置配置值</span>
+<span class="prompt">你发送：</span>/config set messages.responsePrefix="[openclaw]"
+
+<span class="comment"># 删除配置值</span>
+<span class="prompt">你发送：</span>/config unset messages.responsePrefix</div>
+      <div class="callout callout-warn">
+        <span>⚠️</span> 需要先在配置中启用 <code>commands.config: true</code>，仅 Owner 可用。修改会自动校验，非法值会被拒绝。
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="admin" data-keywords="白名单 allowlist 允许列表 访问控制 添加 移除">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/allowlist [add|remove]</div>
+        <div class="cmd-desc">管理允许使用机器人的用户白名单</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>查看、添加或移除白名单条目。需要 <code>commands.config: true</code>。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="admin" data-keywords="重启 restart 重新启动 gateway">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/restart</div>
+        <div class="cmd-desc">重启 Gateway 进程</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>在聊天里直接重启 Gateway。默认启用，可通过 <code>commands.restart: false</code> 禁用。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== Shell 命令 ====== -->
+<div class="section" id="sec-bash">
+  <div class="section-title">🖥️ Shell / Bash 命令</div>
+
+  <div class="cmd-card" data-tags="bash" data-keywords="bash shell 终端 命令行 执行 运行 host 主机 远程">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">! &lt;命令&gt; <span class="cmd-alias">别名：/bash &lt;命令&gt;</span></div>
+        <div class="cmd-desc">在主机上直接执行 Shell 命令</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <h4>通俗解释</h4>
+      <p>直接在聊天里跑终端命令！比如 <code>! ls -la</code> 或 <code>! docker ps</code>。一次只能跑一个命令。</p>
+      <div class="example-block"><span class="prompt">你发送：</span>! ls -la /home
+<span class="prompt">你发送：</span>/bash docker ps
+<span class="prompt">你发送：</span>! top -n 1</div>
+      <div class="callout callout-danger">
+        <span>❗</span> 需要在配置中启用 <code>commands.bash: true</code>，且需要 <code>tools.elevated</code> 白名单授权。<strong>务必谨慎使用！</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="bash" data-keywords="bash poll 检查 输出 结果 状态 后台">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">!poll <span class="cmd-alias">或 /bash poll</span></div>
+        <div class="cmd-desc">查看正在运行的 bash 命令的输出/状态</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>命令跑了太久被放到后台了？用 <code>!poll</code> 看看它的最新输出。</p>
+    </div>
+  </div>
+
+  <div class="cmd-card" data-tags="bash" data-keywords="bash stop 停止 终止 后台 进程">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">!stop <span class="cmd-alias">或 /bash stop</span></div>
+        <div class="cmd-desc">停止正在运行的 bash 命令</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>命令跑飞了想终止？用 <code>!stop</code>。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 其他 ====== -->
+<div class="section" id="sec-misc">
+  <div class="section-title">📚 其他命令</div>
+
+  <div class="cmd-card" data-tags="core" data-keywords="restart 重启 gateway 网关">
+    <div class="cmd-header" onclick="toggle(this)">
+      <span class="cmd-toggle">▶</span>
+      <div class="cmd-info">
+        <div class="cmd-name">/restart</div>
+        <div class="cmd-desc">在聊天中重启 Gateway</div>
+      </div>
+      <div class="cmd-badges"><span class="cmd-badge badge-admin">管理员</span></div>
+    </div>
+    <div class="cmd-body">
+      <p>默认开启。可通过 <code>commands.restart: false</code> 禁用。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== 核心概念 ====== -->
+<div class="section" id="sec-concepts">
+  <div class="section-title">📖 核心概念说明</div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;font-size:13px;line-height:1.9;color:var(--text-dim);">
+    <h3 style="color:var(--info);font-size:15px;margin-bottom:10px;">命令 vs 指令</h3>
+    <p>OpenClaw 的斜杠操作分为两种：</p>
+    <ul>
+      <li><strong style="color:var(--text)">命令（Commands）</strong>：必须作为单独消息发送（如 <code>/help</code>、<code>/new</code>），会立即执行并返回结果</li>
+      <li><strong style="color:var(--text)">指令（Directives）</strong>：可以嵌入到普通消息中（如 <code>/think high 帮我分析</code>），会从消息中剥离出来单独处理，剩余文字照常发给 AI</li>
+    </ul>
+    <p>指令包括：<code>/think</code>、<code>/verbose</code>、<code>/reasoning</code>、<code>/elevated</code>、<code>/exec</code>、<code>/model</code>、<code>/queue</code></p>
+
+    <h3 style="color:var(--info);font-size:15px;margin:16px 0 10px;">指令的两种用法</h3>
+    <ul>
+      <li><strong style="color:var(--text)">单独发送</strong>（如 <code>/verbose on</code>）→ 设置会<strong>持久保存</strong>到会话中，后续所有消息都生效</li>
+      <li><strong style="color:var(--text)">嵌入消息</strong>（如 <code>/verbose on 帮我查bug</code>）→ 作为"临时提示"，<strong>不会</strong>持久保存</li>
+    </ul>
+
+    <h3 style="color:var(--info);font-size:15px;margin:16px 0 10px;">内联快捷命令</h3>
+    <p>这几个命令可以嵌入到普通消息中使用（不需要单独发）：<code>/help</code>、<code>/commands</code>、<code>/status</code>、<code>/whoami</code>（<code>/id</code>）</p>
+    <p>例如：<code>帮我看看 /status 然后写个脚本</code> → 状态信息会单独返回，"写个脚本"照常处理。</p>
+
+    <h3 style="color:var(--info);font-size:15px;margin:16px 0 10px;">权限控制</h3>
+    <p>并非所有人都能用所有命令。权限规则：</p>
+    <ul>
+      <li>如果配置了 <code>commands.allowFrom</code>，只有白名单中的用户能使用命令和指令</li>
+      <li>否则使用渠道自身的白名单/配对授权 + <code>commands.useAccessGroups</code></li>
+      <li>未授权用户发的斜杠命令会被当作普通文本处理</li>
+    </ul>
+
+    <h3 style="color:var(--info);font-size:15px;margin:16px 0 10px;">冒号语法</h3>
+    <p>命令和参数之间可以用冒号分隔（可选）：<code>/think: high</code>、<code>/send: on</code>、<code>/help:</code></p>
+  </div>
+</div>
+
+</main>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0})">↑</button>
+
+<footer class="site-footer">
+  翻译自 <a href="https://docs.openclaw.ai/tools/slash-commands" target="_blank">OpenClaw 官方 Slash Commands 文档</a> · 仅供快速查阅参考
+</footer>
+
+<script>
+function toggle(h) { h.parentElement.classList.toggle('open'); }
+
+const filterBar = document.getElementById('filterBar');
+const sections = document.querySelectorAll('.section');
+const cards = document.querySelectorAll('.cmd-card');
+const noResults = document.getElementById('noResults');
+const searchInput = document.getElementById('searchInput');
+
+filterBar.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  apply(searchInput.value, btn.dataset.filter);
+});
+
+searchInput.addEventListener('input', () => {
+  const f = filterBar.querySelector('.filter-btn.active').dataset.filter;
+  apply(searchInput.value, f);
+});
+
+function apply(q, cat) {
+  q = q.toLowerCase().trim();
+  let n = 0;
+  sections.forEach(sec => {
+    let vis = false;
+    sec.querySelectorAll('.cmd-card').forEach(c => {
+      const tags = c.dataset.tags || '';
+      const kw = c.dataset.keywords || '';
+      const name = c.querySelector('.cmd-name').textContent.toLowerCase();
+      const desc = c.querySelector('.cmd-desc').textContent.toLowerCase();
+      const body = c.querySelector('.cmd-body') ? c.querySelector('.cmd-body').textContent.toLowerCase() : '';
+      const tm = cat === 'all' || tags.includes(cat);
+      const sm = !q || name.includes(q) || desc.includes(q) || kw.includes(q) || body.includes(q);
+      if (tm && sm) { c.style.display = ''; n++; vis = true; }
+      else c.style.display = 'none';
+    });
+    sec.style.display = vis ? '' : 'none';
+  });
+  noResults.classList.toggle('visible', n === 0);
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); searchInput.select(); }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.blur(); searchInput.value = '';
+    apply('', 'all');
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    filterBar.querySelector('[data-filter="all"]').classList.add('active');
+  }
+});
+
+// TOC
+const tocLinks = document.querySelectorAll('.toc a[href^="#"]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const m = [...tocLinks].find(l => l.getAttribute('href') === '#' + entry.target.id);
+      if (m) m.classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+sections.forEach(s => obs.observe(s));
+
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => { backTop.classList.toggle('visible', window.scrollY > 300); });
+</script>
+</body>
+</html>

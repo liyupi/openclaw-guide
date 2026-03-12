@@ -1,0 +1,172 @@
+#content > h1:first-of-type {
+  display: none !important;
+}
+
+.nav-tabs {
+  position: relative;
+}
+
+.nav-tabs-item > div {
+  opacity: 0;
+}
+
+.nav-tabs-underline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1.5px;
+  width: var(--nav-tab-underline-width, 0);
+  transform: translateX(var(--nav-tab-underline-x, 0));
+  background-color: rgb(var(--primary));
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    transform 260ms ease-in-out,
+    width 260ms ease-in-out,
+    opacity 160ms ease-in-out;
+  will-change: transform, width;
+}
+
+html.dark .nav-tabs-underline {
+  background-color: rgb(var(--primary-light));
+}
+
+.nav-tabs-underline-ready .nav-tabs-underline {
+  opacity: 1;
+}
+
+/* ========================================
+   OpenClaw Landing Page (oc-*)
+   ======================================== */
+
+.oc-landing { --oc-coral: #FF5A36; --oc-coral-dark: #e84e2c; --oc-text: #1a1a2e; --oc-text-secondary: #64748b; --oc-text-muted: #94a3b8; --oc-bg-card: #fff; --oc-border: #e5e7eb; --oc-bg-elevated: #f8f9fa; overflow-x: hidden; }
+html.dark .oc-landing { --oc-text: #f0f4ff; --oc-text-secondary: #8892b0; --oc-text-muted: #5a6480; --oc-bg-card: rgba(10, 15, 26, 0.8); --oc-border: rgba(136, 146, 176, 0.15); --oc-bg-elevated: #0a0f1a; }
+.oc-container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+.oc-center { text-align: center; }
+.oc-accent { color: var(--oc-coral); font-weight: 700; }
+.oc-section { margin-bottom: 56px; }
+.oc-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.oc-section-title { font-size: 1.4rem; font-weight: 600; margin: 0; display: flex; align-items: center; gap: 10px; color: var(--oc-text); }
+.oc-section-link { font-size: 0.9rem; color: var(--oc-coral); text-decoration: none; font-weight: 500; }
+.oc-section-link:hover { color: #00e5cc; }
+
+/* Hero */
+.oc-hero { text-align: center; margin-bottom: 56px; padding-top: 60px; }
+.oc-lobster-icon { width: 100px; height: 100px; margin: 0 auto 24px; }
+.oc-lobster-icon img { width: 100%; height: 100%; }
+@keyframes oc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.oc-lobster-icon { animation: oc-float 4s ease-in-out infinite; }
+.oc-title { font-size: clamp(3rem, 10vw, 4.5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 12px; color: var(--oc-text); }
+.oc-tagline { font-size: 1.1rem; font-weight: 500; color: var(--oc-coral); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
+.oc-description { font-size: 1.1rem; color: var(--oc-text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.7; }
+
+/* Latest Post */
+.oc-latest-post-card { display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px; border-radius: 50px; background: var(--oc-bg-card); border: 1px solid var(--oc-border); text-decoration: none; transition: all 0.3s ease; }
+.oc-latest-post-card:hover { border-color: var(--oc-coral); box-shadow: 0 4px 20px rgba(255, 90, 54, 0.25); }
+.oc-latest-post-badge { padding: 3px 8px; border-radius: 12px; background: var(--oc-coral); color: #fff; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.oc-latest-post-title { font-size: 0.9rem; color: var(--oc-text); }
+
+/* Testimonials (horizontal scrolling) */
+.oc-testimonials { margin-bottom: 56px; overflow: hidden; max-width: 100%; }
+.oc-testimonials .oc-section-header { padding: 0 24px; max-width: 860px; margin: 0 auto 20px; }
+.oc-testimonials-track { display: flex; flex-direction: column; gap: 8px; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); }
+.oc-testimonials-row { display: flex; gap: 16px; width: max-content; padding: 8px 0; }
+.oc-row-1 { animation: oc-scroll-left 80s linear infinite; }
+.oc-row-2 { animation: oc-scroll-right 90s linear infinite; }
+.oc-testimonials-track:hover .oc-testimonials-row { animation-play-state: paused; }
+@keyframes oc-scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes oc-scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+.oc-testimonial-card { display: flex; align-items: flex-start; gap: 12px; padding: 16px; min-width: 320px; max-width: 400px; border-radius: 12px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); text-decoration: none; color: var(--oc-text); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; }
+.oc-testimonial-card:hover { border-color: var(--oc-coral); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 90, 54, 0.15); }
+.oc-testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; border: 2px solid var(--oc-border); object-fit: cover; }
+.oc-testimonial-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.oc-testimonial-quote { font-size: 0.9rem; line-height: 1.5; color: var(--oc-text-secondary); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+.oc-testimonial-author { font-size: 0.8rem; font-weight: 600; color: var(--oc-coral); }
+
+/* QuickStart Wrapper */
+.oc-quickstart-wrapper { max-width: 750px; margin: -1rem auto 0; padding: 0 24px 2rem; }
+.oc-quickstart-note { text-align: center; font-size: 0.9rem; color: var(--oc-text-muted); margin-bottom: 56px; }
+
+/* Features Grid */
+.oc-features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (min-width: 640px) { .oc-features-grid { grid-template-columns: repeat(3, 1fr); } }
+.oc-feature-card { display: block; padding: 20px; border-radius: 14px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); text-decoration: none; color: inherit; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+.oc-feature-card:hover { transform: translateY(-4px); border-color: var(--oc-coral); box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15); }
+.oc-feature-icon { font-size: 1.5rem; margin-bottom: 12px; }
+.oc-feature-title { font-size: 1rem; font-weight: 600; color: var(--oc-text); margin-bottom: 6px; }
+.oc-feature-desc { font-size: 0.85rem; color: var(--oc-text-muted); line-height: 1.5; }
+
+/* Integrations */
+.oc-integrations-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.oc-integration-pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 20px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); font-size: 0.85rem; color: var(--oc-text-secondary); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: default; }
+.oc-integration-pill:hover { border-color: var(--oc-coral); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(255, 90, 54, 0.15); }
+.oc-integrations-links { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
+.oc-integrations-links a { color: var(--oc-coral); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+.oc-integrations-links a:hover { color: #00e5cc; }
+.oc-link-separator { color: var(--oc-text-muted); font-size: 0.9rem; }
+
+/* Press */
+.oc-press-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+@media (max-width: 640px) { .oc-press-grid { grid-template-columns: 1fr; } }
+.oc-press-card { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 28px; border-radius: 16px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); text-decoration: none; color: var(--oc-text); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; }
+.oc-press-card:hover { transform: translateY(-4px); border-color: var(--oc-coral); box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15); }
+.oc-press-logo { font-size: 1.1rem; font-weight: 600; color: var(--oc-text-secondary); letter-spacing: 0.02em; }
+.oc-press-quote { font-size: 1rem; font-weight: 500; line-height: 1.5; color: var(--oc-text); margin: 0; font-style: italic; }
+.oc-press-author { font-size: 0.9rem; color: var(--oc-coral); font-weight: 500; }
+
+/* CTA Grid */
+.oc-cta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (min-width: 640px) { .oc-cta-grid { grid-template-columns: repeat(4, 1fr); } }
+.oc-cta { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 16px; border-radius: 16px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); text-decoration: none; color: var(--oc-text); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.oc-cta:hover { transform: translateY(-4px); border-color: var(--oc-coral); box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15); }
+.oc-cta-discord:hover { border-color: #5865F2; box-shadow: 0 12px 40px rgba(88, 101, 242, 0.2); }
+.oc-cta-docs:hover { border-color: #00e5cc; box-shadow: 0 12px 40px rgba(0, 229, 204, 0.15); }
+.oc-cta-github:hover { border-color: var(--oc-text); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); }
+.oc-cta-skills:hover { border-color: #fbbf24; box-shadow: 0 12px 40px rgba(251, 191, 36, 0.15); }
+.oc-cta-label { font-weight: 600; font-size: 1rem; }
+.oc-cta-sub { font-size: 0.8rem; color: var(--oc-text-muted); }
+
+/* Sponsors */
+.oc-sponsors-grid { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+.oc-sponsor-card { display: flex; align-items: center; justify-content: center; padding: 20px 32px; border-radius: 16px; border: 1px solid var(--oc-border); background: var(--oc-bg-card); text-decoration: none; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+.oc-sponsor-card:hover { transform: translateY(-4px); border-color: var(--oc-coral); box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15); }
+.oc-sponsor-logo { height: 36px !important; max-height: 36px !important; width: auto !important; opacity: 0.7; transition: opacity 0.25s ease; object-fit: contain; }
+.oc-sponsor-card:hover .oc-sponsor-logo { opacity: 1; }
+html.dark .oc-sponsor-logo { filter: invert(1); opacity: 0.8; }
+html.dark .oc-sponsor-card:hover .oc-sponsor-logo { filter: invert(1); opacity: 1; }
+.oc-sponsor-logo[alt="OpenAI"],
+.oc-sponsor-logo[alt="Vercel"],
+.oc-sponsor-logo[alt="Blacksmith"],
+.oc-sponsor-logo[alt="Convex"] { filter: invert(1); opacity: 0.5; }
+html.dark .oc-sponsor-logo[alt="OpenAI"],
+html.dark .oc-sponsor-logo[alt="Vercel"],
+html.dark .oc-sponsor-logo[alt="Blacksmith"],
+html.dark .oc-sponsor-logo[alt="Convex"] { filter: none; opacity: 0.7; }
+.oc-sponsor-card:hover .oc-sponsor-logo[alt="OpenAI"],
+.oc-sponsor-card:hover .oc-sponsor-logo[alt="Vercel"],
+.oc-sponsor-card:hover .oc-sponsor-logo[alt="Blacksmith"],
+.oc-sponsor-card:hover .oc-sponsor-logo[alt="Convex"] { filter: invert(1); opacity: 1; }
+html.dark .oc-sponsor-card:hover .oc-sponsor-logo[alt="OpenAI"],
+html.dark .oc-sponsor-card:hover .oc-sponsor-logo[alt="Vercel"],
+html.dark .oc-sponsor-card:hover .oc-sponsor-logo[alt="Blacksmith"],
+html.dark .oc-sponsor-card:hover .oc-sponsor-logo[alt="Convex"] { filter: none; opacity: 1; }
+.oc-sponsor-card [data-rmiz-wrap] { display: flex !important; align-items: center !important; justify-content: center !important; }
+.oc-sponsor-card [data-rmiz-wrap] img { max-height: 36px !important; width: auto !important; }
+.oc-sponsor-card [data-rmiz-btn-zoom] { display: none !important; }
+@media (max-width: 480px) { .oc-sponsors-grid { gap: 16px; } .oc-sponsor-card { padding: 16px 24px; } .oc-sponsor-logo { height: 28px !important; max-height: 28px !important; } }
+
+/* Footer */
+.oc-footer { margin-top: auto; padding: 40px 24px; text-align: center; font-size: 0.9rem; color: var(--oc-text-muted); }
+.oc-footer-credit { font-size: 0.8rem; color: var(--oc-text-muted); margin: 0; opacity: 0.7; }
+
+/* Mobile */
+@media (max-width: 480px) {
+  .oc-hero { padding-top: 40px; }
+  .oc-lobster-icon { width: 80px; height: 80px; }
+  .oc-cta { padding: 20px 12px; }
+  .oc-cta-label { font-size: 0.9rem; }
+  .oc-testimonial-card { min-width: 280px; max-width: 320px; padding: 12px; }
+  .oc-testimonial-avatar { width: 36px; height: 36px; }
+  .oc-testimonial-quote { font-size: 0.85rem; }
+}

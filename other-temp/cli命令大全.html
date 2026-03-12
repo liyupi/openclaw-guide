@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw 命令大全 — 小龙虾速查手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0c0b;
+  --bg-card: #1a1614;
+  --bg-card-hover: #231f1c;
+  --bg-code: #2a2320;
+  --bg-search: #1a1614;
+  --border: #3a3230;
+  --border-active: #FF5A2D;
+  --text: #e8ddd5;
+  --text-muted: #8B7F77;
+  --text-dim: #b0a69e;
+  --accent: #FF5A2D;
+  --accent-dim: #D14A22;
+  --accent-bright: #FF7A3D;
+  --info: #FF8A5B;
+  --success: #2FBF71;
+  --warn: #FFB020;
+  --error: #E23D2D;
+  --tag-setup: #6C63FF;
+  --tag-channel: #FF6B9D;
+  --tag-agent: #00D2FF;
+  --tag-gateway: #FFB020;
+  --tag-model: #2FBF71;
+  --tag-browser: #FF8A5B;
+  --tag-system: #8B7F77;
+  --tag-auto: #D14A22;
+  --tag-node: #A78BFA;
+  --tag-security: #E23D2D;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,.4);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans SC', system-ui, sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Header ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(14,12,11,.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 64px;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.logo-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+.logo span {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 14px;
+  opacity: .6;
+  margin-left: 4px;
+}
+
+/* ── Search ── */
+.search-box {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  background: var(--bg-search);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 20px 10px 44px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--sans);
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+.search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,90,45,.15);
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 16px;
+}
+.search-shortcut {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  pointer-events: none;
+}
+
+.stats {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Main layout ── */
+.main-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 28px;
+  padding: 28px 24px 80px;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 92px;
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.nav-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  padding: 16px 0 6px;
+  border-top: 1px solid var(--border);
+}
+.nav-group-title:first-child { border-top: none; padding-top: 0; }
+
+.nav-link {
+  display: block;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all .15s;
+  cursor: pointer;
+}
+.nav-link:hover {
+  color: var(--text);
+  background: var(--bg-card);
+}
+.nav-link.active {
+  color: var(--accent);
+  background: rgba(255,90,45,.08);
+  font-weight: 500;
+}
+
+/* ── Content ── */
+.content { flex: 1; min-width: 0; }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255,90,45,.06) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255,90,45,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.hero h1 em {
+  color: var(--accent);
+  font-style: normal;
+}
+.hero p {
+  color: var(--text-dim);
+  font-size: 15px;
+  max-width: 560px;
+}
+.hero-badges {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
+
+/* ── Filter tabs ── */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all .2s;
+  white-space: nowrap;
+}
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 36px;
+  scroll-margin-top: 100px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .section-icon { font-size: 22px; }
+
+/* ── Command card ── */
+.cmd-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.cmd-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color .2s, background .2s, transform .1s;
+}
+.cmd-card:hover {
+  border-color: var(--accent-dim);
+  background: var(--bg-card-hover);
+}
+
+.cmd-header {
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  user-select: none;
+}
+.cmd-toggle {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 4px;
+  transition: transform .2s;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.cmd-card.open .cmd-toggle { transform: rotate(90deg); }
+
+.cmd-info { flex: 1; min-width: 0; }
+.cmd-name {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-bright);
+  word-break: break-all;
+}
+.cmd-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.cmd-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cmd-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.cmd-body {
+  display: none;
+  padding: 0 20px 20px 50px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.cmd-card.open .cmd-body { display: block; }
+
+.cmd-body h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--info);
+  margin: 12px 0 4px;
+}
+.cmd-body h4:first-child { margin-top: 0; }
+
+.cmd-body ul {
+  padding-left: 18px;
+  color: var(--text-dim);
+}
+.cmd-body ul li { margin-bottom: 2px; }
+.cmd-body ul li code {
+  background: var(--bg-code);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-bright);
+}
+
+.cmd-example {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.8;
+  position: relative;
+}
+.cmd-example .cmd-prompt { color: var(--success); }
+.cmd-example .cmd-comment { color: var(--text-muted); }
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.cmd-example:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { color: var(--text); border-color: var(--accent); }
+
+.tip-box {
+  background: rgba(255,176,32,.06);
+  border: 1px solid rgba(255,176,32,.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--warn);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.tip-box .tip-icon { flex-shrink: 0; }
+
+/* ── No results ── */
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
+  display: none;
+}
+.no-results.visible { display: block; }
+.no-results .big-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+
+/* ── Back to top ── */
+.back-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .3s, transform .3s;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); }
+.back-top:hover { background: var(--accent-bright); }
+
+/* ── Tag colors ── */
+.tag-setup { background: rgba(108,99,255,.15); color: #9B93FF; }
+.tag-channel { background: rgba(255,107,157,.15); color: #FF9BC0; }
+.tag-agent { background: rgba(0,210,255,.15); color: #66E3FF; }
+.tag-gateway { background: rgba(255,176,32,.15); color: #FFCB66; }
+.tag-model { background: rgba(47,191,113,.15); color: #66D996; }
+.tag-browser { background: rgba(255,138,91,.15); color: #FFAD82; }
+.tag-system { background: rgba(139,127,119,.15); color: #ABA39B; }
+.tag-auto { background: rgba(209,74,34,.15); color: #E47A52; }
+.tag-node { background: rgba(167,139,250,.15); color: #C4B0FC; }
+.tag-security { background: rgba(226,61,45,.15); color: #EF8A82; }
+
+/* ── Footer ── */
+.site-footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.site-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .main-wrap { padding: 20px 16px 60px; }
+  .hero { padding: 28px 20px; }
+  .hero h1 { font-size: 24px; }
+  .cmd-body { padding-left: 20px; }
+  .search-shortcut { display: none; }
+  .stats { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-icon">🦞</span>OpenClaw<span>命令大全</span>
+    </a>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="搜索命令、功能、关键词…" autocomplete="off">
+      <span class="search-shortcut">Ctrl+K</span>
+    </div>
+    <div class="stats" id="statsText">共 60+ 条命令</div>
+  </div>
+</header>
+
+<!-- Main -->
+<div class="main-wrap">
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="nav-group-title">快速导航</div>
+  <a class="nav-link" data-target="sec-setup">🚀 安装与初始化</a>
+  <a class="nav-link" data-target="sec-config">⚙️ 配置管理</a>
+  <a class="nav-link" data-target="sec-channel">💬 聊天渠道</a>
+  <a class="nav-link" data-target="sec-agent">🤖 Agent 智能体</a>
+  <a class="nav-link" data-target="sec-message">📨 消息与发送</a>
+  <a class="nav-link" data-target="sec-model">🧠 模型管理</a>
+  <a class="nav-link" data-target="sec-gateway">🌐 Gateway 网关</a>
+  <a class="nav-link" data-target="sec-browser">🖥️ 浏览器控制</a>
+  <a class="nav-link" data-target="sec-node">📡 Node 节点</a>
+  <a class="nav-link" data-target="sec-cron">⏰ 定时任务</a>
+  <a class="nav-link" data-target="sec-memory">🧲 记忆与搜索</a>
+  <a class="nav-link" data-target="sec-plugin">🧩 插件管理</a>
+  <a class="nav-link" data-target="sec-skill">🎯 技能管理</a>
+  <a class="nav-link" data-target="sec-security">🔒 安全与密钥</a>
+  <a class="nav-link" data-target="sec-system">🖧 系统监控</a>
+  <a class="nav-link" data-target="sec-maintenance">🔧 维护与卸载</a>
+  <a class="nav-link" data-target="sec-misc">📚 其他工具</a>
+  <div class="nav-group-title">专题指南</div>
+  <a class="nav-link" href="slash-commands.html">⚡ 斜杠命令大全</a>
+  <a class="nav-link" href="feishu.html">🐦 飞书接入指南</a>
+  <div class="nav-group-title">参考</div>
+  <a class="nav-link" href="https://docs.openclaw.ai/cli" target="_blank">📖 官方文档 ↗</a>
+</aside>
+
+<!-- Content -->
+<main class="content">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🦞 <em>OpenClaw</em> 命令大全</h1>
+  <p>所有命令都有通俗易懂的中文解释，让你像查字典一样快速找到需要的操作。不用啃英文文档，点击命令卡片即可展开详情。</p>
+  <div class="hero-badges">
+    <div class="hero-badge">📌 基础格式 <code style="color:var(--accent-bright)">openclaw &lt;命令&gt; [选项]</code></div>
+    <div class="hero-badge">🔗 官方文档 <code style="color:var(--accent-bright)">docs.openclaw.ai/cli</code></div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="setup">安装初始化</button>
+  <button class="filter-btn" data-filter="config">配置</button>
+  <button class="filter-btn" data-filter="channel">聊天渠道</button>
+  <button class="filter-btn" data-filter="agent">智能体</button>
+  <button class="filter-btn" data-filter="message">消息</button>
+  <button class="filter-btn" data-filter="model">模型</button>
+  <button class="filter-btn" data-filter="gateway">网关</button>
+  <button class="filter-btn" data-filter="browser">浏览器</button>
+  <button class="filter-btn" data-filter="node">节点</button>
+  <button class="filter-btn" data-filter="auto">自动化</button>
+  <button class="filter-btn" data-filter="security">安全</button>
+  <button class="filter-btn" data-filter="system">系统</button>
+</div>
+
+<!-- No Results -->
+<div class="no-results" id="noResults">
+  <span class="big-icon">🦞</span>
+  没有找到匹配的命令，换个关键词试试？
+</div>
+
+<!-- ====== 安装与初始化 ====== -->
+<div class="section" id="sec-setup" data-category="setup">
+  <div class="section-title"><span class="section-icon">🚀</span> 安装与初始化</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="setup" data-keywords="安装 初始化 配置 第一次 新手 setup wizard 向导">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw setup</div>
+          <div class="cmd-desc">首次安装后的初始化配置，创建配置文件和工作空间</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">初始化</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>就像新买了一部手机第一次开机要设置语言、Wi-Fi 一样，<code>setup</code> 是你安装完 OpenClaw 后"第一次开机"的过程。它会帮你创建配置文件、设置工作目录。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--wizard</code> — 启动交互式引导向导（手把手教你配置）</li>
+          <li><code>--non-interactive</code> — 无人值守模式（不弹出提示，全自动）</li>
+          <li><code>--workspace &lt;路径&gt;</code> — 指定工作空间目录（默认 <code>~/.openclaw/workspace</code>）</li>
+          <li><code>--remote-url &lt;地址&gt;</code> — 连接远程 Gateway 的地址</li>
+          <li><code>--remote-token &lt;令牌&gt;</code> — 远程 Gateway 的认证令牌</li>
+          <li><code>--mode &lt;模式&gt;</code> — 选择向导模式</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 最简单的方式：启动交互式向导</span>
+<span class="cmd-prompt">$</span> openclaw setup --wizard
+
+<span class="cmd-comment"># 指定工作目录</span>
+<span class="cmd-prompt">$</span> openclaw setup --workspace ~/my-openclaw
+
+<span class="cmd-comment"># 连接远程服务器（无需交互）</span>
+<span class="cmd-prompt">$</span> openclaw setup --remote-url wss://my-server.com --remote-token xxx --non-interactive</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="setup" data-keywords="引导 向导 新手 onboard 初始化 入门 gateway channel skill">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw onboard</div>
+          <div class="cmd-desc">交互式新手引导向导，一步步带你设置 Gateway、工作空间和技能</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">初始化</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>比 <code>setup</code> 更强大的"新手大礼包"——不仅创建配置，还会一步步引导你设置 Gateway 网关、聊天渠道、AI 模型密钥、技能等等。第一次用 OpenClaw 推荐跑这个。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--non-interactive</code> — 全自动无交互模式</li>
+          <li><code>--anthropic-api-key &lt;key&gt;</code> — 直接传入 Anthropic API Key</li>
+          <li><code>--openai-api-key &lt;key&gt;</code> — 直接传入 OpenAI API Key</li>
+          <li><code>--gemini-api-key &lt;key&gt;</code> — 直接传入 Gemini API Key</li>
+          <li><code>--openrouter-api-key &lt;key&gt;</code> — 直接传入 OpenRouter API Key</li>
+          <li><code>--gateway-port &lt;端口&gt;</code> — 指定 Gateway 端口</li>
+          <li><code>--skip-ui</code> — 跳过 UI 设置</li>
+          <li><code>--skip-channels</code> — 跳过聊天渠道设置</li>
+          <li><code>--skip-skills</code> — 跳过技能设置</li>
+          <li><code>--reset</code> — 先重置再开始向导</li>
+          <li><code>--install-daemon</code> — 安装后台守护进程</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 交互式引导（推荐新手）</span>
+<span class="cmd-prompt">$</span> openclaw onboard
+
+<span class="cmd-comment"># 非交互式，传入 API Key</span>
+<span class="cmd-prompt">$</span> openclaw onboard --non-interactive --anthropic-api-key sk-xxx --install-daemon
+
+<span class="cmd-comment"># 重置后重新引导</span>
+<span class="cmd-prompt">$</span> openclaw onboard --reset</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="setup" data-keywords="诊断 修复 健康检查 doctor 迁移 migration">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw doctor</div>
+          <div class="cmd-desc">健康检查 + 自动修复（配置、Gateway、旧版迁移）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">初始化</span><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>相当于给小龙虾做一次"体检"——检查配置文件有没有问题、Gateway 是否正常、有没有需要迁移的旧版设置，发现问题还能自动帮你修。升级后建议跑一次。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--deep</code> — 深度扫描系统服务</li>
+          <li><code>--non-interactive</code> — 跳过提示，只应用安全迁移</li>
+          <li><code>--yes</code> — 全部同意默认选项（无头模式）</li>
+          <li><code>--no-workspace-suggestions</code> — 不显示工作空间记忆提示</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw doctor
+<span class="cmd-prompt">$</span> openclaw doctor --deep
+<span class="cmd-prompt">$</span> openclaw doctor --non-interactive --yes</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 配置管理 ====== -->
+<div class="section" id="sec-config" data-category="config">
+  <div class="section-title"><span class="section-icon">⚙️</span> 配置管理</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="config" data-keywords="配置 设置 向导 configure 交互式">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw configure</div>
+          <div class="cmd-desc">交互式配置向导（模型、渠道、技能、Gateway 一站式设置）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">配置</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>打开一个"设置菜单"，像手机设置一样一项一项引导你配置模型、聊天渠道、技能、Gateway 等。适合想调整已有配置的用户。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw configure</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="config" data-keywords="config get set unset 配置 读取 修改 删除 查看">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw config get / set / unset</div>
+          <div class="cmd-desc">读取、修改、删除配置项（精确控制单个配置值）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">配置</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>像"微调旋钮"——不用打开整个设置向导，直接读取或修改某一项配置。路径格式支持点分隔（如 <code>gateway.auth.mode</code>）。</p>
+        <h4>子命令</h4>
+        <ul>
+          <li><code>config get &lt;路径&gt;</code> — 查看某个配置的当前值</li>
+          <li><code>config set &lt;路径&gt; &lt;值&gt;</code> — 设置配置值（支持 JSON5 或纯字符串）</li>
+          <li><code>config unset &lt;路径&gt;</code> — 删除某个配置</li>
+          <li><code>config file</code> — 显示配置文件路径</li>
+          <li><code>config validate</code> — 验证当前配置是否合法</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 查看 Gateway 端口</span>
+<span class="cmd-prompt">$</span> openclaw config get gateway.port
+
+<span class="cmd-comment"># 修改 Gateway 认证模式为 token</span>
+<span class="cmd-prompt">$</span> openclaw config set gateway.auth.mode token
+
+<span class="cmd-comment"># 删除某个配置</span>
+<span class="cmd-prompt">$</span> openclaw config unset gateway.auth.password
+
+<span class="cmd-comment"># 查看配置文件在哪里</span>
+<span class="cmd-prompt">$</span> openclaw config file
+
+<span class="cmd-comment"># 验证配置是否合法</span>
+<span class="cmd-prompt">$</span> openclaw config validate --json</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="config" data-keywords="dashboard 面板 web 网页">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw dashboard</div>
+          <div class="cmd-desc">打开 Web 管理面板</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">配置</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>在浏览器里打开一个可视化管理面板，不用记命令也能管理 OpenClaw。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw dashboard</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="config" data-keywords="自动补全 completion zsh bash fish">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw completion</div>
+          <div class="cmd-desc">生成终端自动补全脚本（Tab 键补全命令）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-setup">配置</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>让你在终端输入 <code>openclaw</code> 后按 Tab 键就能自动补全命令，省得记那么多命令名。支持 bash、zsh、fish。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw completion</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 聊天渠道 ====== -->
+<div class="section" id="sec-channel" data-category="channel">
+  <div class="section-title"><span class="section-icon">💬</span> 聊天渠道管理</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="channel" data-keywords="渠道 频道 列表 channels list whatsapp telegram discord slack signal imessage">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels list</div>
+          <div class="cmd-desc">列出已配置的所有聊天渠道和认证信息</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>查看你的小龙虾连接了哪些聊天平台——WhatsApp、Telegram、Discord、Slack 等等，一目了然。</p>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw channels list
+<span class="cmd-prompt">$</span> openclaw channels list --json</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="添加 渠道 channels add 接入 配置 telegram discord slack whatsapp">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels add</div>
+          <div class="cmd-desc">添加新的聊天渠道（支持向导式或命令行传参）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>想让小龙虾接入 Telegram 或 Discord？用这个命令添加新渠道。不带参数会启动向导引导你一步步设置。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--channel &lt;渠道名&gt;</code> — whatsapp / telegram / discord / slack / signal / imessage / googlechat / msteams</li>
+          <li><code>--account &lt;账号ID&gt;</code> — 账号标识（默认 default）</li>
+          <li><code>--name &lt;名称&gt;</code> — 显示名称</li>
+          <li><code>--token &lt;令牌&gt;</code> — Bot Token</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 交互式添加</span>
+<span class="cmd-prompt">$</span> openclaw channels add
+
+<span class="cmd-comment"># 直接添加 Telegram Bot</span>
+<span class="cmd-prompt">$</span> openclaw channels add --channel telegram --account alerts --name "通知机器人" --token $TELEGRAM_BOT_TOKEN
+
+<span class="cmd-comment"># 添加 Discord Bot</span>
+<span class="cmd-prompt">$</span> openclaw channels add --channel discord --account work --name "工作助手" --token $DISCORD_BOT_TOKEN</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="删除 移除 渠道 channels remove 断开">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels remove</div>
+          <div class="cmd-desc">移除已配置的聊天渠道</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>不想用某个渠道了？用这个命令断开连接。默认只禁用，加 <code>--delete</code> 才是彻底删掉配置。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw channels remove --channel discord --account work --delete</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="状态 健康 channels status 检查 probe">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels status</div>
+          <div class="cmd-desc">检查各渠道的连接状态和健康情况</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>相当于看看各个聊天平台的"信号灯"——连接正常亮绿灯，有问题会提示你怎么修。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw channels status
+<span class="cmd-prompt">$</span> openclaw channels status --probe  <span class="cmd-comment"># 跑额外检查</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="登录 channels login whatsapp 扫码 二维码">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels login / logout</div>
+          <div class="cmd-desc">登录或登出渠道（如 WhatsApp Web 扫码登录）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>有些渠道（如 WhatsApp）需要扫码登录才能用。这个命令就是帮你完成登录/登出操作的。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw channels login --channel whatsapp
+<span class="cmd-prompt">$</span> openclaw channels logout --channel whatsapp</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="日志 channels logs 查看 排查">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw channels logs</div>
+          <div class="cmd-desc">查看渠道的最近日志（排查问题用）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>渠道连不上？消息发不出去？看看日志找线索。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw channels logs
+<span class="cmd-prompt">$</span> openclaw channels logs --channel telegram --lines 100</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="配对 pairing 请求 审批 DM">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw pairing list / approve</div>
+          <div class="cmd-desc">管理渠道的 DM 配对请求（列出待审批、批准配对）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>当有人通过私聊(DM)想和你的小龙虾配对时，这里可以看到请求并决定是否批准。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw pairing list
+<span class="cmd-prompt">$</span> openclaw pairing approve --channel telegram --notify</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="二维码 qr whatsapp 扫码">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw qr</div>
+          <div class="cmd-desc">显示 WhatsApp 登录二维码</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>在终端里显示 WhatsApp Web 的二维码，用手机扫一扫就能登录。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw qr</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="channel" data-keywords="目录 directory 联系人 通讯录 缓存">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw directory</div>
+          <div class="cmd-desc">查看联系人/频道目录缓存</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">渠道</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>列出小龙虾缓存的联系人和频道信息，方便你知道它"认识"谁。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw directory</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== Agent 智能体 ====== -->
+<div class="section" id="sec-agent" data-category="agent">
+  <div class="section-title"><span class="section-icon">🤖</span> Agent 智能体</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="agent" data-keywords="对话 agent 运行 发送 本地 local 消息 session thinking">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw agent</div>
+          <div class="cmd-desc">运行一次 Agent 对话（通过 Gateway 或本地嵌入式）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>直接给 AI 智能体下达一条指令并获取回复。可以指定发送给谁、用哪个 session、甚至要求 AI "深度思考"。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--message &lt;内容&gt;</code> — <strong>必填</strong>，你要说的话</li>
+          <li><code>--to &lt;目标&gt;</code> — 发给谁（手机号、联系人等）</li>
+          <li><code>--agent &lt;名称&gt;</code> — 指定使用哪个 Agent</li>
+          <li><code>--deliver</code> — 发送后把回复投递给目标</li>
+          <li><code>--local</code> — 使用本地嵌入式模式（不走 Gateway）</li>
+          <li><code>--session-id &lt;ID&gt;</code> — 指定会话 ID（保持上下文）</li>
+          <li><code>--thinking &lt;级别&gt;</code> — 思考深度（仅支持部分模型）</li>
+          <li><code>--timeout &lt;秒数&gt;</code> — 超时时间</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 给联系人发消息并投递回复</span>
+<span class="cmd-prompt">$</span> openclaw agent --to +15555550123 --message "帮我查一下今天的天气" --deliver
+
+<span class="cmd-comment"># 用指定 Agent 跑任务</span>
+<span class="cmd-prompt">$</span> openclaw agent --agent ops --message "总结一下日志"
+
+<span class="cmd-comment"># 开启深度思考</span>
+<span class="cmd-prompt">$</span> openclaw agent --message "分析这个问题" --thinking medium</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="agents list 列表 智能体 查看">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw agents list</div>
+          <div class="cmd-desc">列出所有已配置的 Agent 智能体</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>看看你养了几只"小龙虾"——每个 Agent 都是一个独立的 AI 助手，有自己的工作空间和配置。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw agents list
+<span class="cmd-prompt">$</span> openclaw agents list --json --bindings</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="agents add 添加 创建 新建 智能体 workspace 工作空间">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw agents add</div>
+          <div class="cmd-desc">创建新的隔离 Agent（独立工作空间 + 认证 + 路由）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>想要一个专门处理运维的 Agent 和一个专门回消息的 Agent？用这个命令创建新的独立智能体，每个有自己的"房间"（工作空间）。</p>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 交互式创建</span>
+<span class="cmd-prompt">$</span> openclaw agents add
+
+<span class="cmd-comment"># 非交互式创建，并绑定到 Telegram 渠道</span>
+<span class="cmd-prompt">$</span> openclaw agents add ops --workspace ~/agents/ops --bind telegram --non-interactive</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="agents delete 删除 移除 智能体">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw agents delete</div>
+          <div class="cmd-desc">删除一个 Agent 及其工作空间和状态</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw agents delete ops
+<span class="cmd-prompt">$</span> openclaw agents delete ops --force</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="agents bind unbind 绑定 解绑 路由 routing 渠道映射">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw agents bind / unbind</div>
+          <div class="cmd-desc">为 Agent 添加或移除渠道路由绑定</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>决定某个 Agent 负责哪个聊天渠道——比如让"运维 Agent"只处理 Slack 消息，让"客服 Agent"只处理 Telegram 消息。</p>
+        <div class="cmd-example"><span class="cmd-comment"># 绑定到 Slack 渠道</span>
+<span class="cmd-prompt">$</span> openclaw agents bind --agent ops --bind slack
+
+<span class="cmd-comment"># 解除所有绑定</span>
+<span class="cmd-prompt">$</span> openclaw agents unbind --agent ops --all</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="acp ide 桥接 bridge 编辑器 连接">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw acp</div>
+          <div class="cmd-desc">ACP 桥接 — 将 IDE 编辑器连接到 Gateway</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>让你的代码编辑器（如 VS Code、Cursor）和 OpenClaw Gateway 对接，这样 AI 可以直接在 IDE 里帮你写代码。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw acp</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="sessions 会话 对话 历史 记录">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw sessions</div>
+          <div class="cmd-desc">列出已存储的对话会话</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>查看小龙虾和谁聊过天、有哪些对话记录在"记忆"里。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw sessions
+<span class="cmd-prompt">$</span> openclaw sessions --json --verbose</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="agent" data-keywords="tui 终端 交互 terminal ui 聊天">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw tui</div>
+          <div class="cmd-desc">打开终端交互界面（TUI），在命令行里和 Agent 聊天</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-agent">智能体</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>在终端里打开一个聊天窗口，直接和 AI 对话，不需要通过其他平台。适合开发者在命令行里快速提问。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw tui
+<span class="cmd-prompt">$</span> openclaw tui --message "帮我写一个 Python 脚本"</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 消息与发送 ====== -->
+<div class="section" id="sec-message" data-category="message">
+  <div class="section-title"><span class="section-icon">📨</span> 消息与发送</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="message" data-keywords="发送 消息 message send 文本 图片 media 回复 reply">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message send</div>
+          <div class="cmd-desc">发送消息到指定渠道的指定目标（支持文字、图片、回复）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>从命令行直接发消息！可以发到 WhatsApp、Telegram、Discord、Slack 等任意已配置的平台。支持发文字、图片、回复消息等。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--channel &lt;渠道&gt;</code> — 发到哪个平台</li>
+          <li><code>--target &lt;目标&gt;</code> — 发给谁（频道ID / 用户ID / 手机号 等）</li>
+          <li><code>--message &lt;内容&gt;</code> — 消息内容</li>
+          <li><code>--media &lt;文件&gt;</code> — 附加图片/文件</li>
+          <li><code>--reply-to &lt;消息ID&gt;</code> — 回复某条消息</li>
+          <li><code>--thread-id &lt;线程ID&gt;</code> — 在特定线程中发送</li>
+        </ul>
+        <h4>使用示例</h4>
+        <div class="cmd-example"><span class="cmd-comment"># 给 WhatsApp 联系人发消息</span>
+<span class="cmd-prompt">$</span> openclaw message send --target +15555550123 --message "你好！"
+
+<span class="cmd-comment"># 在 Discord 频道发消息</span>
+<span class="cmd-prompt">$</span> openclaw message send --channel discord --target channel:123 --message "大家好"
+
+<span class="cmd-comment"># 回复某条消息</span>
+<span class="cmd-prompt">$</span> openclaw message send --channel discord --target channel:123 --message "收到" --reply-to 456</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="投票 poll 问卷 调查 选项">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message poll</div>
+          <div class="cmd-desc">创建投票（支持 WhatsApp / Telegram / Discord / Teams）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>在群里发起一个投票，比如"今天午餐吃什么？"——团队成员可以投票选择。</p>
+        <div class="cmd-example"><span class="cmd-comment"># Discord 投票</span>
+<span class="cmd-prompt">$</span> openclaw message poll --channel discord --target channel:123 \
+  --poll-question "今天吃什么？" --poll-option 火锅 --poll-option 烧烤 --poll-multi
+
+<span class="cmd-comment"># Telegram 投票（2分钟自动关闭）</span>
+<span class="cmd-prompt">$</span> openclaw message poll --channel telegram --target @mychat \
+  --poll-question "周末聚餐？" --poll-option 周六 --poll-option 周日 \
+  --poll-duration-seconds 120</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="表情 react 回应 emoji 反应">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message react</div>
+          <div class="cmd-desc">给消息添加/移除表情反应</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>给某条消息点个"赞"或者加个表情反应，比如 ✅ 表示已处理。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw message react --channel slack --target C123 --message-id 456 --emoji "✅"
+<span class="cmd-prompt">$</span> openclaw message react --channel discord --target channel:123 --message-id 789 --emoji "👍"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="read 读取 消息历史 编辑 删除 置顶 edit delete pin search">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message read / edit / delete / pin / search</div>
+          <div class="cmd-desc">读取消息历史、编辑、删除、置顶、搜索消息</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>全方位操作消息——翻看历史记录、编辑已发送的消息、删除消息、置顶重要消息、搜索频道内容。</p>
+        <h4>子命令</h4>
+        <ul>
+          <li><code>message read --target &lt;目标&gt;</code> — 读取消息历史</li>
+          <li><code>message edit --message-id &lt;ID&gt; --message &lt;内容&gt;</code> — 编辑消息</li>
+          <li><code>message delete --message-id &lt;ID&gt;</code> — 删除消息</li>
+          <li><code>message pin / unpin --message-id &lt;ID&gt;</code> — 置顶/取消置顶</li>
+          <li><code>message search --query &lt;关键词&gt;</code> — 搜索消息（Discord）</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw message read --channel slack --target C123 --limit 50
+<span class="cmd-prompt">$</span> openclaw message search --channel discord --guild-id 123 --query "部署"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="thread 线程 帖子 话题 discord">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message thread create / list / reply</div>
+          <div class="cmd-desc">管理 Discord 帖子/线程（创建、列出、回复）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw message thread create --channel discord --target channel:123 --thread-name "讨论帖"
+<span class="cmd-prompt">$</span> openclaw message thread reply --channel discord --target 456 --message "同意！"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="广播 broadcast 群发 批量 多人">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message broadcast</div>
+          <div class="cmd-desc">群发消息给多个目标</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>一次性给多个人或多个频道发消息，适合通知公告。支持 <code>--dry-run</code> 先预览不实际发送。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw message broadcast --channel discord --targets channel:1 --targets channel:2 --message "系统维护通知"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="message" data-keywords="kick ban timeout 踢人 封禁 禁言 discord 管理">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw message kick / ban / timeout</div>
+          <div class="cmd-desc">Discord 管理操作 — 踢人、封禁、禁言</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-channel">消息</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw message kick --channel discord --guild-id 123 --user-id 456 --reason "违规"
+<span class="cmd-prompt">$</span> openclaw message ban --channel discord --guild-id 123 --user-id 456
+<span class="cmd-prompt">$</span> openclaw message timeout --channel discord --guild-id 123 --user-id 456 --duration-min 30</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 模型管理 ====== -->
+<div class="section" id="sec-model" data-category="model">
+  <div class="section-title"><span class="section-icon">🧠</span> 模型管理</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="model" data-keywords="模型 状态 models status 认证 auth 过期 oauth">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models status</div>
+          <div class="cmd-desc">查看模型配置状态（认证信息、API Key 是否有效）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>检查你配置的 AI 模型（如 Claude、GPT、Gemini）的"健康状况"——API Key 是否过期、OAuth 是否正常、能不能正常调用。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--probe</code> — 发送实际请求测试模型（会消耗少量额度）</li>
+          <li><code>--check</code> — 只检查认证状态（不发请求）</li>
+          <li><code>--json</code> — JSON 格式输出</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models status
+<span class="cmd-prompt">$</span> openclaw models status --probe</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="模型 列表 models list 可用 本地">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models list</div>
+          <div class="cmd-desc">列出所有可用模型</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models list
+<span class="cmd-prompt">$</span> openclaw models list --provider openai
+<span class="cmd-prompt">$</span> openclaw models list --local  <span class="cmd-comment"># 只看本地模型</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="模型 设置 models set 默认 主模型 切换">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models set / set-image</div>
+          <div class="cmd-desc">设置默认文本模型和图像模型</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>决定小龙虾默认用哪个 AI 大脑来思考和画图。</p>
+        <div class="cmd-example"><span class="cmd-comment"># 设置默认文本模型</span>
+<span class="cmd-prompt">$</span> openclaw models set claude-sonnet-4-20250514
+
+<span class="cmd-comment"># 设置默认图像模型</span>
+<span class="cmd-prompt">$</span> openclaw models set-image dall-e-3</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="模型 扫描 scan 自动发现 检测">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models scan</div>
+          <div class="cmd-desc">自动扫描和发现可用的 AI 模型</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>让小龙虾自动"嗅探"你的 API Key 能用哪些模型，省得手动一个个配置。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models scan
+<span class="cmd-prompt">$</span> openclaw models scan --set-default --yes  <span class="cmd-comment"># 扫描并自动设为默认</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="模型 认证 auth add 添加 api key token setup-token paste-token anthropic openai">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models auth add / setup-token / paste-token</div>
+          <div class="cmd-desc">添加或配置模型 API 认证信息</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>告诉小龙虾你的 API Key 或 Token，这样它才能调用各家 AI 模型。</p>
+        <h4>子命令</h4>
+        <ul>
+          <li><code>auth add</code> — 交互式添加认证</li>
+          <li><code>auth setup-token --provider anthropic</code> — 自动设置 Anthropic Token</li>
+          <li><code>auth paste-token --provider &lt;名称&gt;</code> — 手动粘贴 Token</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models auth add
+<span class="cmd-prompt">$</span> openclaw models auth setup-token --provider anthropic --yes</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="回退 fallback 备选 模型 故障转移">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models fallbacks / image-fallbacks</div>
+          <div class="cmd-desc">设置模型故障转移（主模型挂了自动切换到备选）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>给 AI 模型设置"候补队员"——如果主力模型挂了或者限速了，自动换一个备用模型继续工作。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models fallbacks list
+<span class="cmd-prompt">$</span> openclaw models fallbacks add gpt-4o
+<span class="cmd-prompt">$</span> openclaw models fallbacks remove gpt-4o
+<span class="cmd-prompt">$</span> openclaw models fallbacks clear</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="别名 alias 模型别名 简称">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models aliases</div>
+          <div class="cmd-desc">管理模型别名（给长模型名起个简短的昵称）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models aliases list
+<span class="cmd-prompt">$</span> openclaw models aliases add claude claude-sonnet-4-20250514</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="model" data-keywords="auth order 认证顺序 优先级 provider 供应商">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw models auth order get / set / clear</div>
+          <div class="cmd-desc">管理模型提供商的认证优先级顺序</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-model">模型</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>当多个提供商都有同样的模型时，决定先用谁的——比如优先用 Anthropic 直连，不行再用 OpenRouter。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw models auth order get
+<span class="cmd-prompt">$</span> openclaw models auth order set anthropic openrouter
+<span class="cmd-prompt">$</span> openclaw models auth order clear</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== Gateway 网关 ====== -->
+<div class="section" id="sec-gateway" data-category="gateway">
+  <div class="section-title"><span class="section-icon">🌐</span> Gateway 网关</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="gateway" data-keywords="网关 启动 运行 gateway run 前台 foreground websocket 端口">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw gateway / gateway run</div>
+          <div class="cmd-desc">前台启动 Gateway WebSocket 服务</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-gateway">网关</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>Gateway 是小龙虾的"神经中枢"——所有消息收发、AI 调用、工具执行都通过它。这个命令启动它（前台模式，关掉终端就停）。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--port &lt;端口&gt;</code> — 指定端口（默认 18789）</li>
+          <li><code>--token &lt;令牌&gt;</code> — 设置认证 Token</li>
+          <li><code>--password &lt;密码&gt;</code> — 设置认证密码</li>
+          <li><code>--force</code> — 强制启动（杀掉占用端口的进程）</li>
+          <li><code>--verbose</code> — 输出详细日志</li>
+          <li><code>--dev</code> — 开发模式</li>
+          <li><code>--tailscale &lt;模式&gt;</code> — 通过 Tailscale 暴露</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw gateway
+<span class="cmd-prompt">$</span> openclaw gateway --port 8080 --force --verbose</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="gateway" data-keywords="网关 服务 安装 卸载 install uninstall start stop restart 后台 守护">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw gateway install / start / stop / restart / uninstall</div>
+          <div class="cmd-desc">管理 Gateway 后台服务（安装、启动、停止、重启、卸载）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-gateway">网关</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>把 Gateway 装成后台服务——开机自动启动，关掉终端也不会停。就像把程序设成"开机自启"。</p>
+        <div class="cmd-example"><span class="cmd-comment"># 安装为系统服务</span>
+<span class="cmd-prompt">$</span> openclaw gateway install
+
+<span class="cmd-comment"># 启动/停止/重启</span>
+<span class="cmd-prompt">$</span> openclaw gateway start
+<span class="cmd-prompt">$</span> openclaw gateway stop
+<span class="cmd-prompt">$</span> openclaw gateway restart
+
+<span class="cmd-comment"># 卸载服务</span>
+<span class="cmd-prompt">$</span> openclaw gateway uninstall</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="gateway" data-keywords="网关 状态 gateway status 探测 probe 健康">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw gateway status / health / probe</div>
+          <div class="cmd-desc">查看 Gateway 运行状态和健康情况</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-gateway">网关</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <ul>
+          <li><code>status</code> — 综合状态（服务 + 探测）</li>
+          <li><code>health</code> — 简单健康检查</li>
+          <li><code>probe</code> — "全面体检"，同时探测本地和远程网关</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw gateway status
+<span class="cmd-prompt">$</span> openclaw gateway health --json
+<span class="cmd-prompt">$</span> openclaw gateway probe  <span class="cmd-comment"># 最全面的诊断</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="gateway" data-keywords="gateway call rpc 远程调用 接口 api">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw gateway call</div>
+          <div class="cmd-desc">底层 RPC 调用（直接调用 Gateway 接口）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-gateway">网关</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>高级玩法——直接调用 Gateway 的底层接口。适合脚本化操作或调试。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw gateway call status
+<span class="cmd-prompt">$</span> openclaw gateway call logs.tail --params '{"sinceMs": 60000}'
+<span class="cmd-prompt">$</span> openclaw gateway call config.patch --params '{"data": {"some": "value"}}'</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="gateway" data-keywords="发现 discover bonjour dns 局域网 mdns 广播">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw gateway discover</div>
+          <div class="cmd-desc">在局域网中发现其他 Gateway 实例（Bonjour / mDNS）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-gateway">网关</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>在同一个局域网内"搜索"是否有其他 OpenClaw Gateway 在运行，方便多设备互联。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw gateway discover
+<span class="cmd-prompt">$</span> openclaw gateway discover --json --timeout 4000</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 浏览器控制 ====== -->
+<div class="section" id="sec-browser" data-category="browser">
+  <div class="section-title"><span class="section-icon">🖥️</span> 浏览器控制</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="browser" data-keywords="浏览器 启动 停止 状态 browser start stop status chrome">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser start / stop / status</div>
+          <div class="cmd-desc">启动、停止、查看浏览器控制服务</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>让小龙虾能控制一个浏览器——打开网页、点按钮、截图等等。支持 Chrome、Brave、Edge。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser start
+<span class="cmd-prompt">$</span> openclaw browser status
+<span class="cmd-prompt">$</span> openclaw browser stop</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="browser" data-keywords="标签页 tabs open close focus 打开 关闭 切换 网页">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser tabs / open / close / focus</div>
+          <div class="cmd-desc">管理浏览器标签页（查看、打开、关闭、切换）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser tabs  <span class="cmd-comment"># 查看所有标签页</span>
+<span class="cmd-prompt">$</span> openclaw browser open https://github.com  <span class="cmd-comment"># 打开网页</span>
+<span class="cmd-prompt">$</span> openclaw browser focus abc123  <span class="cmd-comment"># 切换到某个标签</span>
+<span class="cmd-prompt">$</span> openclaw browser close abc123  <span class="cmd-comment"># 关闭标签</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="browser" data-keywords="截图 screenshot snapshot 快照 页面结构 aria">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser screenshot / snapshot</div>
+          <div class="cmd-desc">截图或获取页面结构快照</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <ul>
+          <li><code>screenshot</code> — 截取网页图片</li>
+          <li><code>snapshot</code> — 获取页面的 DOM/ARIA 结构（供 AI 理解页面内容）</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser screenshot --full-page
+<span class="cmd-prompt">$</span> openclaw browser snapshot --format ai</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="browser" data-keywords="导航 点击 输入 click type navigate hover drag 自动化 操作">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser navigate / click / type / hover / drag</div>
+          <div class="cmd-desc">浏览器自动化操作（导航、点击、输入、悬停、拖拽）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>让小龙虾像人一样操作网页——打开链接、点按钮、填表单、拖拽元素。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser navigate https://example.com
+<span class="cmd-prompt">$</span> openclaw browser click ref123  <span class="cmd-comment"># 点击元素</span>
+<span class="cmd-prompt">$</span> openclaw browser type ref456 "Hello World"  <span class="cmd-comment"># 输入文字</span>
+<span class="cmd-prompt">$</span> openclaw browser fill --fields '{"name":"张三","email":"test@test.com"}'</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="browser" data-keywords="profile 配置文件 浏览器配置 chrome 独立">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser profiles / create-profile / delete-profile</div>
+          <div class="cmd-desc">管理浏览器配置文件（隔离不同的浏览器环境）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>每个 profile 是一个独立的浏览器环境——不同的 Cookie、登录状态等。可以一个用来办公，一个用来测试。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser profiles
+<span class="cmd-prompt">$</span> openclaw browser create-profile --name work --color "#FF5A36"
+<span class="cmd-prompt">$</span> openclaw browser --browser-profile work tabs</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="browser" data-keywords="pdf evaluate console 执行 js javascript 控制台 导出">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw browser pdf / evaluate / console</div>
+          <div class="cmd-desc">导出 PDF、执行 JS 脚本、查看控制台输出</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-browser">浏览器</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw browser pdf  <span class="cmd-comment"># 将当前页面导出为 PDF</span>
+<span class="cmd-prompt">$</span> openclaw browser evaluate --fn "document.title"  <span class="cmd-comment"># 执行 JS</span>
+<span class="cmd-prompt">$</span> openclaw browser console  <span class="cmd-comment"># 查看控制台日志</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== Node 节点 ====== -->
+<div class="section" id="sec-node" data-category="node">
+  <div class="section-title"><span class="section-icon">📡</span> Node 节点</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="node" data-keywords="node 节点 运行 安装 服务 host 远程">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw node run / install / start / stop / status</div>
+          <div class="cmd-desc">运行或管理 Node Host 服务（远程设备上的代理）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>Node Host 就像你在另一台电脑上安排的"分身"——让 Gateway 可以远程控制那台机器上的浏览器、执行命令等。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw node run --host my-server.com --port 18789
+<span class="cmd-prompt">$</span> openclaw node install --host my-server.com --port 18789
+<span class="cmd-prompt">$</span> openclaw node status</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="node" data-keywords="nodes 节点列表 远程 连接 状态 approve reject 审批">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw nodes list / status / approve / reject</div>
+          <div class="cmd-desc">管理已连接的远程节点（查看、审批、拒绝）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw nodes list
+<span class="cmd-prompt">$</span> openclaw nodes status --connected
+<span class="cmd-prompt">$</span> openclaw nodes approve &lt;requestId&gt;
+<span class="cmd-prompt">$</span> openclaw nodes pending  <span class="cmd-comment"># 查看待审批节点</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="node" data-keywords="nodes run 远程执行 命令 shell 运行脚本 远程操作">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw nodes run / invoke / notify</div>
+          <div class="cmd-desc">在远程节点上执行命令、发送通知</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>远程遥控其他机器——在节点上跑命令、发通知，就像 SSH 但通过 OpenClaw Gateway。</p>
+        <div class="cmd-example"><span class="cmd-comment"># 在远程节点执行命令</span>
+<span class="cmd-prompt">$</span> openclaw nodes run --node my-mac "ls -la"
+
+<span class="cmd-comment"># 发送通知到节点</span>
+<span class="cmd-prompt">$</span> openclaw nodes notify --node my-mac --title "提醒" --body "部署完成！"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="node" data-keywords="camera 摄像头 拍照 录像 snap clip 远程拍照">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw nodes camera snap / clip / list</div>
+          <div class="cmd-desc">远程控制节点摄像头（拍照、录像）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw nodes camera list --node my-mac
+<span class="cmd-prompt">$</span> openclaw nodes camera snap --node my-mac --facing front
+<span class="cmd-prompt">$</span> openclaw nodes camera clip --node my-mac --duration 10</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="node" data-keywords="screen 屏幕 录屏 canvas 画布 location 定位 位置">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw nodes screen / canvas / location</div>
+          <div class="cmd-desc">远程录屏、Canvas 画布控制、获取位置信息</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw nodes screen record --node my-mac --duration 30
+<span class="cmd-prompt">$</span> openclaw nodes canvas snapshot --node my-mac
+<span class="cmd-prompt">$</span> openclaw nodes location get --node my-iphone</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="node" data-keywords="devices 设备 配对 令牌 token rotate revoke">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw devices list / approve / remove / rotate</div>
+          <div class="cmd-desc">管理设备配对和令牌</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-node">节点</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw devices list
+<span class="cmd-prompt">$</span> openclaw devices approve &lt;requestId&gt;
+<span class="cmd-prompt">$</span> openclaw devices remove &lt;deviceId&gt;
+<span class="cmd-prompt">$</span> openclaw devices rotate --device abc --role admin</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 定时任务 ====== -->
+<div class="section" id="sec-cron" data-category="auto">
+  <div class="section-title"><span class="section-icon">⏰</span> 定时任务</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="auto" data-keywords="定时 cron 计划任务 添加 创建 at every schedule">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw cron add</div>
+          <div class="cmd-desc">创建定时任务（按时间间隔或 cron 表达式）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>像设闹钟一样——让小龙虾在固定时间自动做某件事，比如每天早上 9 点发一条状态报告。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--name &lt;名称&gt;</code> — 任务名称（必填）</li>
+          <li><code>--at &lt;时间&gt;</code> — 指定时间执行一次</li>
+          <li><code>--every &lt;间隔&gt;</code> — 每隔多久执行一次（如 <code>1h</code>、<code>30m</code>）</li>
+          <li><code>--cron &lt;表达式&gt;</code> — 标准 cron 表达式</li>
+          <li><code>--system-event &lt;文本&gt;</code> — 触发系统事件</li>
+          <li><code>--message &lt;内容&gt;</code> — 发送消息</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-comment"># 每小时触发一次系统事件</span>
+<span class="cmd-prompt">$</span> openclaw cron add --name "hourly-check" --every 1h --system-event "执行例行检查"
+
+<span class="cmd-comment"># 每天早上9点发消息</span>
+<span class="cmd-prompt">$</span> openclaw cron add --name "morning-report" --cron "0 9 * * *" --message "早安！请查看今日待办"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="auto" data-keywords="定时 cron list status 列表 状态 查看">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw cron list / status</div>
+          <div class="cmd-desc">查看所有定时任务及其运行状态</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw cron list
+<span class="cmd-prompt">$</span> openclaw cron list --all --json
+<span class="cmd-prompt">$</span> openclaw cron status</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="auto" data-keywords="定时 cron edit rm enable disable 编辑 删除 启用 禁用 运行记录 runs">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw cron edit / rm / enable / disable / runs / run</div>
+          <div class="cmd-desc">编辑、删除、启用/禁用、查看运行记录、手动执行定时任务</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw cron edit myJob --every 2h  <span class="cmd-comment"># 改为每2小时</span>
+<span class="cmd-prompt">$</span> openclaw cron disable myJob  <span class="cmd-comment"># 暂时关闭</span>
+<span class="cmd-prompt">$</span> openclaw cron enable myJob   <span class="cmd-comment"># 重新开启</span>
+<span class="cmd-prompt">$</span> openclaw cron runs --id myJob  <span class="cmd-comment"># 查看运行历史</span>
+<span class="cmd-prompt">$</span> openclaw cron run myJob --force  <span class="cmd-comment"># 手动触发一次</span>
+<span class="cmd-prompt">$</span> openclaw cron rm myJob  <span class="cmd-comment"># 删除任务</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="auto" data-keywords="hooks 钩子 webhook 事件 触发器 自动化">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw hooks list / info / enable / disable / install</div>
+          <div class="cmd-desc">管理事件钩子（Hooks）——事件触发自动执行</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>Hooks 就像"触发器"——当某个事件发生时（比如收到消息、文件变化），自动执行预设的操作。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw hooks list
+<span class="cmd-prompt">$</span> openclaw hooks info myHook
+<span class="cmd-prompt">$</span> openclaw hooks enable myHook
+<span class="cmd-prompt">$</span> openclaw hooks disable myHook</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="auto" data-keywords="webhooks gmail 邮件 gmail pubsub 自动化 邮件通知">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw webhooks gmail setup / run</div>
+          <div class="cmd-desc">设置和运行 Gmail 邮件 Webhook（有新邮件自动通知）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw webhooks gmail setup --account myGmail
+<span class="cmd-prompt">$</span> openclaw webhooks gmail run</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="auto" data-keywords="审批 approvals 沙箱 sandbox 权限 allowlist 白名单">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw approvals / sandbox</div>
+          <div class="cmd-desc">管理操作审批策略和沙箱环境</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-auto">自动化</span><span class="cmd-tag tag-security">安全</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <ul>
+          <li><code>approvals</code> — 控制哪些操作需要人工审批、设置白名单</li>
+          <li><code>sandbox</code> — 管理沙箱环境（AI 在安全隔离的环境中执行操作）</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw approvals get
+<span class="cmd-prompt">$</span> openclaw approvals set --auto  <span class="cmd-comment"># 自动审批</span>
+<span class="cmd-prompt">$</span> openclaw approvals allowlist add "safe-command"
+<span class="cmd-prompt">$</span> openclaw sandbox list
+<span class="cmd-prompt">$</span> openclaw sandbox explain</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 记忆与搜索 ====== -->
+<div class="section" id="sec-memory" data-category="system">
+  <div class="section-title"><span class="section-icon">🧲</span> 记忆与搜索</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="记忆 memory search 搜索 向量 语义 知识库 MEMORY.md">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw memory search / index / status</div>
+          <div class="cmd-desc">管理 AI 记忆库（语义搜索、索引、状态查看）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>小龙虾的"记忆"存储在 <code>MEMORY.md</code> 和 <code>memory/*.md</code> 文件中。你可以用语义搜索快速找到以前记住的信息。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw memory search "上次部署出了什么问题？"
+<span class="cmd-prompt">$</span> openclaw memory index  <span class="cmd-comment"># 重建索引</span>
+<span class="cmd-prompt">$</span> openclaw memory status  <span class="cmd-comment"># 查看索引状态</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 插件管理 ====== -->
+<div class="section" id="sec-plugin" data-category="system">
+  <div class="section-title"><span class="section-icon">🧩</span> 插件管理</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="插件 plugins list info install enable disable doctor 安装 启用 禁用">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw plugins list / info / install / enable / disable / doctor</div>
+          <div class="cmd-desc">管理插件（列出、安装、启用、禁用、排查问题）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">插件</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>插件就像给小龙虾装"外挂"——扩展新功能。比如语音通话插件 <code>voicecall</code>。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw plugins list
+<span class="cmd-prompt">$</span> openclaw plugins info voicecall
+<span class="cmd-prompt">$</span> openclaw plugins install voicecall
+<span class="cmd-prompt">$</span> openclaw plugins enable voicecall
+<span class="cmd-prompt">$</span> openclaw plugins disable voicecall
+<span class="cmd-prompt">$</span> openclaw plugins doctor  <span class="cmd-comment"># 排查插件加载错误</span></div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          大部分插件操作完后需要重启 Gateway 才能生效。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 技能管理 ====== -->
+<div class="section" id="sec-skill" data-category="system">
+  <div class="section-title"><span class="section-icon">🎯</span> 技能管理</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="技能 skills list info check 查看 检查 clawhub">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw skills list / info / check</div>
+          <div class="cmd-desc">管理 AI 技能（列出、查看详情、检查就绪状态）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">技能</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>技能是 AI 的"特长"——比如搜索网页、操作文件、发邮件等。这里可以看看小龙虾会哪些技能、哪些还没准备好。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw skills list
+<span class="cmd-prompt">$</span> openclaw skills list --eligible  <span class="cmd-comment"># 只看可用的</span>
+<span class="cmd-prompt">$</span> openclaw skills info web-search
+<span class="cmd-prompt">$</span> openclaw skills check  <span class="cmd-comment"># 检查哪些技能缺依赖</span></div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          使用 <code>npx clawhub</code> 可以搜索、安装和同步更多技能。
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 安全与密钥 ====== -->
+<div class="section" id="sec-security" data-category="security">
+  <div class="section-title"><span class="section-icon">🔒</span> 安全与密钥</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="security" data-keywords="安全 审计 security audit 权限 chmod 加固">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw security audit</div>
+          <div class="cmd-desc">安全审计（检查配置漏洞、文件权限、Gateway 安全性）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-security">安全</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>给小龙虾做一次"安全体检"——查找配置里的安全隐患，检查文件权限是否过于宽松。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw security audit
+<span class="cmd-prompt">$</span> openclaw security audit --fix   <span class="cmd-comment"># 自动修复安全问题</span>
+<span class="cmd-prompt">$</span> openclaw security audit --deep  <span class="cmd-comment"># 深度探测 Gateway</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="security" data-keywords="密钥 secrets 秘密 reload configure audit 明文 加密 引用">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw secrets reload / configure / audit</div>
+          <div class="cmd-desc">管理密钥和敏感信息（重新加载、配置、审计）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-security">安全</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>管理 API Key、Token 等敏感信息。支持用环境变量引用（SecretRef）来避免明文存储。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw secrets reload  <span class="cmd-comment"># 重新加载密钥</span>
+<span class="cmd-prompt">$</span> openclaw secrets configure  <span class="cmd-comment"># 交互式配置密钥管理</span>
+<span class="cmd-prompt">$</span> openclaw secrets audit  <span class="cmd-comment"># 扫描明文残留</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 系统监控 ====== -->
+<div class="section" id="sec-system" data-category="system">
+  <div class="section-title"><span class="section-icon">🖧</span> 系统监控</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="状态 status 总览 健康 诊断 usage 用量">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw status</div>
+          <div class="cmd-desc">查看整体状态（Gateway + 渠道 + 用量 综合诊断）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>一条命令看全局——Gateway 是否在线、渠道连接状态、最近联系人、API 用量等。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw status
+<span class="cmd-prompt">$</span> openclaw status --deep    <span class="cmd-comment"># 探测所有渠道</span>
+<span class="cmd-prompt">$</span> openclaw status --usage   <span class="cmd-comment"># 查看 API 用量</span>
+<span class="cmd-prompt">$</span> openclaw status --all     <span class="cmd-comment"># 完整诊断（可粘贴分享）</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="健康 health 检查 网关 gateway">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw health</div>
+          <div class="cmd-desc">快速检查 Gateway 是否存活</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw health
+<span class="cmd-prompt">$</span> openclaw health --json</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="日志 logs 查看 跟踪 follow tail 排查">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw logs</div>
+          <div class="cmd-desc">查看 Gateway 日志（实时跟踪或历史查看）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>出了问题先看日志！支持实时跟踪（<code>--follow</code>），就像看直播一样盯着运行状态。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw logs
+<span class="cmd-prompt">$</span> openclaw logs --follow  <span class="cmd-comment"># 实时跟踪</span>
+<span class="cmd-prompt">$</span> openclaw logs --limit 200  <span class="cmd-comment"># 最近200条</span>
+<span class="cmd-prompt">$</span> openclaw logs --json  <span class="cmd-comment"># JSON 格式</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="system event heartbeat presence 系统事件 心跳 在线状态">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw system event / heartbeat / presence</div>
+          <div class="cmd-desc">系统事件、心跳管理、在线状态查询</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">系统</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <ul>
+          <li><code>system event --text "..."</code> — 发送一个系统事件（触发 AI 处理）</li>
+          <li><code>system heartbeat last</code> — 查看最后一次心跳</li>
+          <li><code>system heartbeat enable/disable</code> — 开启/关闭心跳</li>
+          <li><code>system presence</code> — 查看系统在线状态</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw system event --text "检查服务器状态"
+<span class="cmd-prompt">$</span> openclaw system heartbeat last
+<span class="cmd-prompt">$</span> openclaw system presence</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 维护与卸载 ====== -->
+<div class="section" id="sec-maintenance" data-category="system">
+  <div class="section-title"><span class="section-icon">🔧</span> 维护与卸载</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="更新 update 升级 版本">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw update</div>
+          <div class="cmd-desc">更新 OpenClaw 到最新版本</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">维护</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>一键升级小龙虾到最新版本。也可以用 <code>openclaw --update</code> 快捷方式。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw update</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="备份 backup 创建 验证 还原">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw backup create / verify</div>
+          <div class="cmd-desc">创建和验证配置/数据备份</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">维护</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>重要操作前先备份——万一搞砸了还能恢复。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw backup create
+<span class="cmd-prompt">$</span> openclaw backup verify</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="重置 reset 恢复默认 清除 初始化">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw reset</div>
+          <div class="cmd-desc">重置本地配置和状态（CLI 保留，数据清空）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">维护</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>"恢复出厂设置"——清除配置和数据，但不卸载程序。适合从头开始重新配置。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--scope &lt;范围&gt;</code> — 指定重置范围</li>
+          <li><code>--yes</code> — 确认执行</li>
+          <li><code>--dry-run</code> — 只预览不实际执行</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw reset --dry-run  <span class="cmd-comment"># 先看看会清除什么</span>
+<span class="cmd-prompt">$</span> openclaw reset --yes</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="卸载 uninstall 删除 移除 彻底清除">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw uninstall</div>
+          <div class="cmd-desc">卸载 Gateway 服务和本地数据（CLI 保留）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">维护</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>卸载 Gateway 服务并清理数据。注意：CLI 程序本身不会被删除，只是清理了服务和数据。</p>
+        <h4>常用选项</h4>
+        <ul>
+          <li><code>--all</code> — 全部清除</li>
+          <li><code>--service</code> — 只卸载服务</li>
+          <li><code>--state</code> — 只清除状态数据</li>
+          <li><code>--workspace</code> — 只清除工作空间</li>
+          <li><code>--dry-run</code> — 预览模式</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw uninstall --dry-run
+<span class="cmd-prompt">$</span> openclaw uninstall --all --yes</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 其他工具 ====== -->
+<div class="section" id="sec-misc" data-category="system">
+  <div class="section-title"><span class="section-icon">📚</span> 其他工具</div>
+  <div class="cmd-grid">
+
+    <div class="cmd-card" data-tags="system" data-keywords="文档 docs 搜索 帮助 查找">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw docs [关键词]</div>
+          <div class="cmd-desc">搜索官方文档</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">工具</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>不用打开浏览器，直接在命令行搜索官方文档。</p>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw docs gateway
+<span class="cmd-prompt">$</span> openclaw docs "how to setup telegram"</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="dns 域名 解析 discovery coredns tailscale">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw dns setup</div>
+          <div class="cmd-desc">设置 DNS 发现（CoreDNS + Tailscale 广域发现）</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">网络</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw dns setup
+<span class="cmd-prompt">$</span> openclaw dns setup --apply  <span class="cmd-comment"># 安装配置（需 sudo，仅 macOS）</span></div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="version 版本 信息 --version -V">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">openclaw --version / -V</div>
+          <div class="cmd-desc">查看当前安装的 OpenClaw 版本</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">工具</span></div>
+      </div>
+      <div class="cmd-body">
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw --version
+<span class="cmd-prompt">$</span> openclaw -V</div>
+      </div>
+    </div>
+
+    <div class="cmd-card" data-tags="system" data-keywords="global flags 全局 --no-color --profile --dev 隔离 配置文件">
+      <div class="cmd-header" onclick="toggleCard(this)">
+        <span class="cmd-toggle">▶</span>
+        <div class="cmd-info">
+          <div class="cmd-name">全局选项 --no-color / --profile / --dev / --json</div>
+          <div class="cmd-desc">所有命令都支持的全局选项</div>
+        </div>
+        <div class="cmd-tags"><span class="cmd-tag tag-system">工具</span></div>
+      </div>
+      <div class="cmd-body">
+        <h4>通俗解释</h4>
+        <p>这些选项可以加在任何命令后面：</p>
+        <ul>
+          <li><code>--no-color</code> — 关闭彩色输出（方便复制日志）</li>
+          <li><code>--profile &lt;名称&gt;</code> — 使用独立配置文件（多环境隔离）</li>
+          <li><code>--dev</code> — 开发模式（隔离状态到 <code>~/.openclaw-dev</code>）</li>
+          <li><code>--json</code> — 输出 JSON 格式（方便脚本处理）</li>
+        </ul>
+        <div class="cmd-example"><span class="cmd-prompt">$</span> openclaw status --json
+<span class="cmd-prompt">$</span> openclaw --profile staging gateway status
+<span class="cmd-prompt">$</span> openclaw --dev gateway run</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0})">↑</button>
+
+<!-- Footer -->
+<footer class="site-footer">
+  基于 <a href="https://docs.openclaw.ai/cli" target="_blank">OpenClaw 官方文档</a> 整理 · 仅供快速查阅参考
+</footer>
+
+<script>
+// Toggle card
+function toggleCard(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+// Filter
+const filterBar = document.getElementById('filterBar');
+const sections = document.querySelectorAll('.section');
+const cards = document.querySelectorAll('.cmd-card');
+const noResults = document.getElementById('noResults');
+
+filterBar.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filter = btn.dataset.filter;
+  applyFilters(document.getElementById('searchInput').value, filter);
+});
+
+// Search
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  const activeFilter = filterBar.querySelector('.filter-btn.active').dataset.filter;
+  applyFilters(searchInput.value, activeFilter);
+});
+
+function applyFilters(query, category) {
+  const q = query.toLowerCase().trim();
+  let visibleCount = 0;
+
+  sections.forEach(sec => {
+    const secCategory = sec.dataset.category;
+    const catMatch = category === 'all' || secCategory === category;
+    let sectionHasVisible = false;
+
+    sec.querySelectorAll('.cmd-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      const keywords = card.dataset.keywords || '';
+      const name = card.querySelector('.cmd-name').textContent.toLowerCase();
+      const desc = card.querySelector('.cmd-desc').textContent.toLowerCase();
+      const bodyText = card.querySelector('.cmd-body') ? card.querySelector('.cmd-body').textContent.toLowerCase() : '';
+
+      const tagMatch = category === 'all' || tags.includes(category);
+      const searchMatch = !q || name.includes(q) || desc.includes(q) || keywords.includes(q) || bodyText.includes(q);
+
+      if (tagMatch && searchMatch) {
+        card.style.display = '';
+        visibleCount++;
+        sectionHasVisible = true;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    sec.style.display = (catMatch && sectionHasVisible) ? '' : 'none';
+  });
+
+  noResults.classList.toggle('visible', visibleCount === 0);
+  document.getElementById('statsText').textContent = q || category !== 'all'
+    ? `${visibleCount} 条匹配`
+    : '共 60+ 条命令';
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+    searchInput.select();
+  }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.blur();
+    searchInput.value = '';
+    applyFilters('', 'all');
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    filterBar.querySelector('[data-filter="all"]').classList.add('active');
+  }
+});
+
+// Sidebar navigation
+document.querySelectorAll('.nav-link[data-target]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById(link.dataset.target);
+    if (target) {
+      filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      filterBar.querySelector('[data-filter="all"]').classList.add('active');
+      searchInput.value = '';
+      applyFilters('', 'all');
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// Active sidebar link on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[data-target="${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-100px 0px -60% 0px' });
+
+sections.forEach(sec => observer.observe(sec));
+
+// Back to top
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  backTop.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Copy button for code examples
+document.querySelectorAll('.cmd-example').forEach(block => {
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '复制';
+  btn.addEventListener('click', () => {
+    const text = block.textContent
+      .replace(/复制/g, '')
+      .replace(/\$ /g, '')
+      .replace(/# .+/g, '')
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l => l)
+      .join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '已复制!';
+      setTimeout(() => { btn.textContent = '复制'; }, 1500);
+    });
+  });
+  block.appendChild(btn);
+});
+</script>
+</body>
+</html>
