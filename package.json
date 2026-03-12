@@ -1,0 +1,22 @@
+{
+  "name": "openclaw-docs-zh",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.34.0",
+    "astro": "^5.7.0",
+    "sharp": "^0.33.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@fontsource-variable/dm-sans": "^5.0.0",
+    "@fontsource/dm-sans": "^5.0.0"
+  }
+}

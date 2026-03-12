@@ -1,0 +1,1388 @@
+---
+const title = 'OpenClaw 中文网 — 真正能做事的开源 AI 助手';
+const description =
+  'OpenClaw 是开源自托管的个人 AI 智能体，支持 WhatsApp、Telegram、Discord、飞书、钉钉、企业微信等 20+ 聊天平台。运行在你自己的电脑上，数据完全私有，一键安装。';
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/assets/og-default.png" />
+    <meta property="og:site_name" content="OpenClaw 中文网" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/assets/pixel-lobster.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --oc-coral: #ff5a36;
+        --oc-coral-dark: #e84e2c;
+        --oc-text: #1a1a2e;
+        --oc-text-secondary: #64748b;
+        --oc-text-muted: #94a3b8;
+        --oc-bg: #fff;
+        --oc-bg-card: #fff;
+        --oc-border: #e5e7eb;
+        --oc-bg-elevated: #f8f9fa;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --oc-text: #f0f4ff;
+          --oc-text-secondary: #8892b0;
+          --oc-text-muted: #5a6480;
+          --oc-bg: #0a0f1a;
+          --oc-bg-card: rgba(10, 15, 26, 0.8);
+          --oc-border: rgba(136, 146, 176, 0.15);
+          --oc-bg-elevated: #0a0f1a;
+        }
+      }
+      body {
+        font-family: 'Fragment Mono', ui-monospace, monospace;
+        background: var(--oc-bg);
+        color: var(--oc-text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .oc-container {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .oc-center {
+        text-align: center;
+      }
+      .oc-accent {
+        color: var(--oc-coral);
+        font-weight: 700;
+      }
+      .oc-section {
+        margin-bottom: 56px;
+      }
+      .oc-section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .oc-section-title {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--oc-text);
+      }
+      .oc-section-link {
+        font-size: 0.9rem;
+        color: var(--oc-coral);
+        font-weight: 500;
+      }
+      .oc-section-link:hover {
+        color: #00e5cc;
+      }
+
+      /* ── Topbar ── */
+      .oc-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      .oc-topbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      .oc-topbar-logo img {
+        width: 32px;
+        height: 32px;
+      }
+      .oc-topbar-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        font-size: 0.9rem;
+      }
+      .oc-topbar-links a {
+        color: var(--oc-text-secondary);
+        transition: color 0.2s;
+      }
+      .oc-topbar-links a:hover {
+        color: var(--oc-coral);
+      }
+
+      /* ── Hero ── */
+      .oc-hero {
+        text-align: center;
+        margin-bottom: 56px;
+        padding-top: 60px;
+      }
+      .oc-lobster-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 24px;
+        animation: oc-float 4s ease-in-out infinite;
+      }
+      .oc-lobster-icon img {
+        width: 100%;
+        height: 100%;
+      }
+      @keyframes oc-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      .oc-title {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: clamp(3rem, 10vw, 4.5rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+      .oc-tagline {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--oc-coral);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .oc-description {
+        font-size: 1.1rem;
+        color: var(--oc-text-secondary);
+        max-width: 780px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+
+      /* ── Latest Post ── */
+      .oc-latest-post-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 20px;
+        border-radius: 50px;
+        background: var(--oc-bg-card);
+        border: 1px solid var(--oc-border);
+        transition: all 0.3s ease;
+      }
+      .oc-latest-post-card:hover {
+        border-color: var(--oc-coral);
+        box-shadow: 0 4px 20px rgba(255, 90, 54, 0.25);
+      }
+      .oc-latest-post-badge {
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: var(--oc-coral);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .oc-latest-post-title {
+        font-size: 0.9rem;
+      }
+
+      /* ── Testimonials ── */
+      .oc-testimonials {
+        margin-bottom: 56px;
+        overflow: hidden;
+      }
+      .oc-testimonials .oc-section-header {
+        padding: 0 24px;
+        max-width: 860px;
+        margin: 0 auto 20px;
+      }
+      .oc-testimonials-track {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+        mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 5%,
+          black 95%,
+          transparent
+        );
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 5%,
+          black 95%,
+          transparent
+        );
+      }
+      .oc-testimonials-row {
+        display: flex;
+        gap: 16px;
+        width: max-content;
+        padding: 8px 0;
+      }
+      .oc-row-1 {
+        animation: oc-scroll-left 80s linear infinite;
+      }
+      .oc-row-2 {
+        animation: oc-scroll-right 90s linear infinite;
+      }
+      .oc-testimonials-track:hover .oc-testimonials-row {
+        animation-play-state: paused;
+      }
+      @keyframes oc-scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes oc-scroll-right {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      .oc-testimonial-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        min-width: 320px;
+        max-width: 400px;
+        border-radius: 12px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        color: var(--oc-text);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+      }
+      .oc-testimonial-card:hover {
+        border-color: var(--oc-coral);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(255, 90, 54, 0.15);
+      }
+      .oc-testimonial-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 2px solid var(--oc-border);
+        object-fit: cover;
+      }
+      .oc-testimonial-content {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+      }
+      .oc-testimonial-quote {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--oc-text-secondary);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .oc-testimonial-author {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--oc-coral);
+      }
+
+      /* ── Quick Start ── */
+      .oc-quickstart-wrapper {
+        max-width: 750px;
+        margin: -1rem auto 0;
+        padding: 0 24px 2rem;
+      }
+      .oc-quickstart-note {
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--oc-text-muted);
+        margin-bottom: 56px;
+      }
+      .oc-tabs {
+        border: 1px solid var(--oc-border);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--oc-bg-card);
+      }
+      .oc-tabs-header {
+        display: flex;
+        border-bottom: 1px solid var(--oc-border);
+        overflow-x: auto;
+      }
+      .oc-tab-btn {
+        padding: 12px 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.85rem;
+        color: var(--oc-text-muted);
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+      }
+      .oc-tab-btn:hover {
+        color: var(--oc-text);
+      }
+      .oc-tab-btn.active {
+        color: var(--oc-coral);
+        border-bottom-color: var(--oc-coral);
+      }
+      .oc-tab-panel {
+        display: none;
+        padding: 20px 24px;
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+      .oc-tab-panel.active {
+        display: block;
+      }
+      .oc-tab-panel pre {
+        background: #1a1a2e;
+        color: #e2e8f0;
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 12px 0;
+        font-size: 0.85rem;
+      }
+      .oc-tab-panel code {
+        font-family: 'Fragment Mono', monospace;
+      }
+      .oc-tab-panel a {
+        color: var(--oc-coral);
+      }
+
+      /* ── Features Grid ── */
+      .oc-features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      @media (min-width: 640px) {
+        .oc-features-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .oc-feature-card {
+        display: block;
+        padding: 20px;
+        border-radius: 14px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .oc-feature-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--oc-coral);
+        box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15);
+      }
+      .oc-feature-icon {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+      }
+      .oc-feature-title {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .oc-feature-desc {
+        font-size: 0.85rem;
+        color: var(--oc-text-muted);
+        line-height: 1.5;
+      }
+
+      /* ── Integrations ── */
+      .oc-integrations-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+      .oc-integration-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 20px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        font-size: 0.85rem;
+        color: var(--oc-text-secondary);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .oc-integration-pill:hover {
+        border-color: var(--oc-coral);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(255, 90, 54, 0.15);
+      }
+      .oc-integrations-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .oc-integrations-links a {
+        color: var(--oc-coral);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      .oc-integrations-links a:hover {
+        color: #00e5cc;
+      }
+      .oc-link-separator {
+        color: var(--oc-text-muted);
+      }
+
+      /* ── Press ── */
+      .oc-press-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      @media (max-width: 640px) {
+        .oc-press-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .oc-press-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 24px 28px;
+        border-radius: 16px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+      }
+      .oc-press-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--oc-coral);
+        box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15);
+      }
+      .oc-press-logo {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--oc-text-secondary);
+      }
+      .oc-press-quote {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        font-style: italic;
+      }
+      .oc-press-author {
+        font-size: 0.9rem;
+        color: var(--oc-coral);
+        font-weight: 500;
+      }
+
+      /* ── CTA Grid ── */
+      .oc-cta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      @media (min-width: 640px) {
+        .oc-cta-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .oc-cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 24px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .oc-cta:hover {
+        transform: translateY(-4px);
+      }
+      .oc-cta-discord:hover {
+        border-color: #5865f2;
+        box-shadow: 0 12px 40px rgba(88, 101, 242, 0.2);
+      }
+      .oc-cta-docs:hover {
+        border-color: #00e5cc;
+        box-shadow: 0 12px 40px rgba(0, 229, 204, 0.15);
+      }
+      .oc-cta-github:hover {
+        border-color: var(--oc-text);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      }
+      .oc-cta-skills:hover {
+        border-color: #fbbf24;
+        box-shadow: 0 12px 40px rgba(251, 191, 36, 0.15);
+      }
+      .oc-cta-label {
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+      .oc-cta-sub {
+        font-size: 0.8rem;
+        color: var(--oc-text-muted);
+      }
+
+      /* ── Sponsors ── */
+      .oc-sponsors-grid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .oc-sponsor-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 32px;
+        border-radius: 16px;
+        border: 1px solid var(--oc-border);
+        background: var(--oc-bg-card);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .oc-sponsor-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--oc-coral);
+        box-shadow: 0 12px 40px rgba(255, 90, 54, 0.15);
+      }
+      .oc-sponsor-logo {
+        height: 36px;
+        width: auto;
+        opacity: 0.7;
+        transition: opacity 0.25s ease;
+        object-fit: contain;
+        filter: invert(1);
+      }
+      .oc-sponsor-card:hover .oc-sponsor-logo {
+        opacity: 1;
+      }
+      @media (prefers-color-scheme: dark) {
+        .oc-sponsor-logo {
+          filter: none;
+          opacity: 0.8;
+        }
+        .oc-sponsor-card:hover .oc-sponsor-logo {
+          opacity: 1;
+          filter: none;
+        }
+      }
+
+      /* ── Footer ── */
+      .oc-footer {
+        padding: 40px 24px;
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--oc-text-muted);
+        opacity: 0.7;
+      }
+
+      /* ── Mobile ── */
+      @media (max-width: 480px) {
+        .oc-hero {
+          padding-top: 40px;
+        }
+        .oc-lobster-icon {
+          width: 80px;
+          height: 80px;
+        }
+        .oc-cta {
+          padding: 20px 12px;
+        }
+        .oc-cta-label {
+          font-size: 0.9rem;
+        }
+        .oc-testimonial-card {
+          min-width: 280px;
+          max-width: 320px;
+          padding: 12px;
+        }
+        .oc-testimonial-avatar {
+          width: 36px;
+          height: 36px;
+        }
+        .oc-sponsors-grid {
+          gap: 16px;
+        }
+        .oc-sponsor-card {
+          padding: 16px 24px;
+        }
+        .oc-sponsor-logo {
+          height: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Topbar -->
+    <nav class="oc-topbar">
+      <a href="/" class="oc-topbar-logo">
+        <img src="/assets/pixel-lobster.svg" alt="OpenClaw" />
+        <span>OpenClaw 中文网</span>
+      </a>
+      <div class="oc-topbar-links">
+        <a href="/docs-home">文档</a>
+        <a href="/start/getting-started">快速开始</a>
+        <a
+          href="https://github.com/openclaw/openclaw"
+          target="_blank"
+          rel="noopener noreferrer">GitHub</a
+        >
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="oc-hero">
+      <div class="oc-container oc-center">
+        <div class="oc-lobster-icon">
+          <img src="/assets/openclaw-hero.svg" alt="OpenClaw" />
+        </div>
+        <h1 class="oc-title">OpenClaw</h1>
+        <p class="oc-tagline">The AI that actually does things.</p>
+        <p class="oc-description">
+          清理收件箱、发送邮件、管理日历、自动值机。<br />
+          通过 WhatsApp、Telegram 或任何你已经在用的聊天应用。
+        </p>
+      </div>
+    </div>
+
+    <!-- Latest Post -->
+    <div class="oc-container oc-center" style="margin-bottom: 3rem;">
+      <a
+        href="https://openclaw.ai/blog/virustotal-partnership"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="oc-latest-post-card"
+      >
+        <span class="oc-latest-post-badge">New</span>
+        <span class="oc-latest-post-title"
+          >OpenClaw 与 VirusTotal 合作保障 Skill 安全 →</span
+        >
+      </a>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="oc-testimonials">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 用户评价
+          </h2>
+          <a
+            href="https://openclaw.ai/shoutouts"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oc-section-link">查看全部 →</a
+          >
+        </div>
+      </div>
+      <div class="oc-testimonials-track">
+        <div class="oc-testimonials-row oc-row-1">
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/therno/status/2014216984267780431"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/therno"
+              alt="therno"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">"它在运营我的公司。"</p>
+              <span class="oc-testimonial-author">@therno</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/karpathy/status/2005692186470514904"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/karpathy"
+              alt="karpathy"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "阅读体验很棒，谢谢。喜欢 Oracle 和 Claw。"
+              </p>
+              <span class="oc-testimonial-author">@karpathy</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/davemorin/status/2013723700668096605"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/davemorin"
+              alt="davemorin"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "我甚至不知道该怎么称呼 OpenClaw。这是全新的事物。用了几周后，这是自
+                ChatGPT 发布以来，我第一次感觉自己活在未来。"
+              </p>
+              <span class="oc-testimonial-author">@davemorin</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/crossiBuilds/status/2008478023826153665"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/crossiBuilds"
+              alt="crossiBuilds"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "Siri 本该成为的样子。而且远不止于此。"
+              </p>
+              <span class="oc-testimonial-author">@crossiBuilds</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/nofil_ai/status/2010460892576788958"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/nofil_ai"
+              alt="nofil_ai"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "OpenClaw 就是 Jarvis。它已经存在了。"
+              </p>
+              <span class="oc-testimonial-author">@nofil_ai</span>
+            </div>
+          </a>
+          <!-- duplicates for seamless scroll -->
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/therno/status/2014216984267780431"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/therno"
+              alt="therno"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">"它在运营我的公司。"</p>
+              <span class="oc-testimonial-author">@therno</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/karpathy/status/2005692186470514904"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/karpathy"
+              alt="karpathy"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "阅读体验很棒，谢谢。喜欢 Oracle 和 Claw。"
+              </p>
+              <span class="oc-testimonial-author">@karpathy</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/davemorin/status/2013723700668096605"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/davemorin"
+              alt="davemorin"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "这是全新的事物。我感觉自己活在未来。"
+              </p>
+              <span class="oc-testimonial-author">@davemorin</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/crossiBuilds/status/2008478023826153665"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/crossiBuilds"
+              alt="crossiBuilds"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "Siri 本该成为的样子。"
+              </p>
+              <span class="oc-testimonial-author">@crossiBuilds</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/nofil_ai/status/2010460892576788958"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/nofil_ai"
+              alt="nofil_ai"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "OpenClaw 就是 Jarvis。"
+              </p>
+              <span class="oc-testimonial-author">@nofil_ai</span>
+            </div>
+          </a>
+        </div>
+        <div class="oc-testimonials-row oc-row-2">
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/tobi_bsf/status/2008888825217527924"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/tobi_bsf"
+              alt="tobi_bsf"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "用了 OpenClaw 一周，真的感觉像早期 AGI。"
+              </p>
+              <span class="oc-testimonial-author">@tobi_bsf</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/Dimillian/status/2008446638172340398"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/Dimillian"
+              alt="Dimillian"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "Anthropic 或 OpenAI
+                这样的巨头造不出这个。大公司的运作方式不可能做到。"
+              </p>
+              <span class="oc-testimonial-author">@Dimillian</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/dreetje/status/2012248852020023480"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/dreetje"
+              alt="dreetje"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "我对 OpenClaw
+                上瘾了。它已经成为我日常生活不可或缺的部分。"
+              </p>
+              <span class="oc-testimonial-author">@dreetje</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/robmartinson/status/2010410971056242689"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/robmartinson"
+              alt="robmartinson"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "太疯狂了。OpenClaw 是超能力。"
+              </p>
+              <span class="oc-testimonial-author">@robmartinson</span>
+            </div>
+          </a>
+          <!-- duplicates for seamless scroll -->
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/tobi_bsf/status/2008888825217527924"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/tobi_bsf"
+              alt="tobi_bsf"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">
+                "感觉像早期 AGI。"
+              </p>
+              <span class="oc-testimonial-author">@tobi_bsf</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/Dimillian/status/2008446638172340398"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/Dimillian"
+              alt="Dimillian"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">"巨头造不出这个。"</p>
+              <span class="oc-testimonial-author">@Dimillian</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/dreetje/status/2012248852020023480"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/dreetje"
+              alt="dreetje"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">"像个好朋友。"</p>
+              <span class="oc-testimonial-author">@dreetje</span>
+            </div>
+          </a>
+          <a
+            class="oc-testimonial-card"
+            href="https://x.com/robmartinson/status/2010410971056242689"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://unavatar.io/x/robmartinson"
+              alt="robmartinson"
+              class="oc-testimonial-avatar"
+              loading="lazy"
+            />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">"OpenClaw 是超能力。"</p>
+              <span class="oc-testimonial-author">@robmartinson</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 快速开始
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="oc-quickstart-wrapper">
+      <div class="oc-tabs">
+        <div class="oc-tabs-header">
+          <button class="oc-tab-btn active" data-tab="install">一键安装</button>
+          <button class="oc-tab-btn" data-tab="npm">npm</button>
+          <button class="oc-tab-btn" data-tab="source">源码安装</button>
+          <button class="oc-tab-btn" data-tab="macos">macOS App</button>
+        </div>
+        <div class="oc-tab-panel active" id="tab-install">
+          <p>适用于所有平台。macOS 首次运行可能需要管理员权限（安装 Homebrew）。</p>
+          <pre><code>curl -fsSL https://openclaw.ai/install.sh | bash</code></pre>
+        </div>
+        <div class="oc-tab-panel" id="tab-npm">
+          <pre><code># 安装 OpenClaw
+npm i -g openclaw
+
+# 认识你的龙虾
+openclaw onboard</code></pre>
+        </div>
+        <div class="oc-tab-panel" id="tab-source">
+          <p>适合喜欢读源码的你。</p>
+          <pre><code>git clone https://github.com/openclaw/openclaw.git
+cd openclaw && pnpm install && pnpm run build
+pnpm run openclaw onboard</code></pre>
+        </div>
+        <div class="oc-tab-panel" id="tab-macos">
+          <p>菜单栏快速访问你的龙虾。与 CLI 完美配合。</p>
+          <p>
+            <a
+              href="https://github.com/openclaw/openclaw/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+              >下载 macOS 应用（Beta）</a
+            > — 需要 macOS 15+，Universal Binary
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="oc-quickstart-note">
+      适用于 macOS、Windows 和 Linux。一键安装会自动安装 Node.js 和所有依赖。
+    </p>
+
+    <!-- Features -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 核心功能
+          </h2>
+        </div>
+        <div class="oc-features-grid">
+          <a class="oc-feature-card" href="/start/getting-started">
+            <div class="oc-feature-icon">💻</div>
+            <div class="oc-feature-title">运行在你的电脑上</div>
+            <div class="oc-feature-desc">
+              Mac、Windows 或 Linux。Anthropic、OpenAI 或本地模型。默认私有。
+            </div>
+          </a>
+          <a class="oc-feature-card" href="/channels">
+            <div class="oc-feature-icon">💬</div>
+            <div class="oc-feature-title">支持所有聊天应用</div>
+            <div class="oc-feature-desc">
+              WhatsApp、Telegram、Discord、Slack、Signal 或 iMessage。
+            </div>
+          </a>
+          <a class="oc-feature-card" href="/concepts/memory">
+            <div class="oc-feature-icon">🧠</div>
+            <div class="oc-feature-title">持久记忆</div>
+            <div class="oc-feature-desc">
+              记住你，成为独一无二的你的 AI。
+            </div>
+          </a>
+          <a class="oc-feature-card" href="/tools/browser">
+            <div class="oc-feature-icon">🌐</div>
+            <div class="oc-feature-title">浏览器控制</div>
+            <div class="oc-feature-desc">
+              浏览网页、填写表单、提取数据。
+            </div>
+          </a>
+          <a class="oc-feature-card" href="/tools/exec">
+            <div class="oc-feature-icon">⚡</div>
+            <div class="oc-feature-title">完整系统访问</div>
+            <div class="oc-feature-desc">
+              读写文件、运行 Shell、执行脚本。完全访问或沙箱隔离。
+            </div>
+          </a>
+          <a class="oc-feature-card" href="/tools/skills">
+            <div class="oc-feature-icon">🧩</div>
+            <div class="oc-feature-title">技能与插件</div>
+            <div class="oc-feature-desc">
+              使用社区技能或自己构建。它甚至能自己编写新技能。
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integrations -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 全面集成
+          </h2>
+        </div>
+        <div class="oc-integrations-row">
+          {
+            [
+              'WhatsApp',
+              'Telegram',
+              'Discord',
+              'Slack',
+              'Signal',
+              'iMessage',
+              'Claude',
+              'GPT',
+              'Spotify',
+              'Hue',
+              'Obsidian',
+              'Twitter',
+              'Browser',
+              'Gmail',
+              'GitHub',
+            ].map((name) => <span class="oc-integration-pill">{name}</span>)
+          }
+        </div>
+        <div class="oc-integrations-links">
+          <a
+            href="https://openclaw.ai/integrations"
+            target="_blank"
+            rel="noopener noreferrer">查看全部 50+ 集成 →</a
+          >
+          <span class="oc-link-separator">·</span>
+          <a href="/start/showcase">查看社区作品 →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Press -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 媒体报道
+          </h2>
+        </div>
+        <div class="oc-press-grid">
+          <a
+            class="oc-press-card"
+            href="https://www.macstories.net/stories/clawdbot-showed-me-what-the-future-of-personal-ai-assistants-looks-like/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="oc-press-logo">MacStories</div>
+            <p class="oc-press-quote">
+              "OpenClaw 向我展示了个人 AI 助手的未来"
+            </p>
+            <span class="oc-press-author">Federico Viticci</span>
+          </a>
+          <a
+            class="oc-press-card"
+            href="https://www.starryhope.com/minipcs/clawdbot-mac-mini-ai-agent-trend/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="oc-press-logo">StarryHope</div>
+            <p class="oc-press-quote">
+              "龙虾接管：为什么开发者纷纷购买 Mac Mini 来运行自己的 AI 代理"
+            </p>
+            <span class="oc-press-author">Jim Mendenhall</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Grid -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-cta-grid">
+          <a
+            class="oc-cta oc-cta-discord"
+            href="https://discord.gg/clawd"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="oc-cta-label">Discord</span>
+            <span class="oc-cta-sub">加入社区</span>
+          </a>
+          <a class="oc-cta oc-cta-docs" href="/start/getting-started">
+            <span class="oc-cta-label">中文文档</span>
+            <span class="oc-cta-sub">阅读指南</span>
+          </a>
+          <a
+            class="oc-cta oc-cta-github"
+            href="https://github.com/openclaw/openclaw"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="oc-cta-label">GitHub</span>
+            <span class="oc-cta-sub">查看源码</span>
+          </a>
+          <a
+            class="oc-cta oc-cta-skills"
+            href="https://clawhub.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="oc-cta-label">ClawHub</span>
+            <span class="oc-cta-sub">下载技能</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sponsors -->
+    <div class="oc-section">
+      <div class="oc-container">
+        <div class="oc-section-header">
+          <h2 class="oc-section-title">
+            <span class="oc-accent">⟩</span> 赞助商
+          </h2>
+        </div>
+        <div class="oc-sponsors-grid">
+          <a
+            href="https://openai.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oc-sponsor-card"
+          >
+            <img
+              src="/assets/sponsors/openai.svg"
+              alt="OpenAI"
+              class="oc-sponsor-logo"
+              style="height:32px"
+            />
+          </a>
+          <a
+            href="https://vercel.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oc-sponsor-card"
+          >
+            <img
+              src="/assets/sponsors/vercel.svg"
+              alt="Vercel"
+              class="oc-sponsor-logo"
+              style="height:28px"
+            />
+          </a>
+          <a
+            href="https://blacksmith.sh"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oc-sponsor-card"
+          >
+            <img
+              src="/assets/sponsors/blacksmith.svg"
+              alt="Blacksmith"
+              class="oc-sponsor-logo"
+              style="height:32px"
+            />
+          </a>
+          <a
+            href="https://www.convex.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="oc-sponsor-card"
+          >
+            <img
+              src="/assets/sponsors/convex.svg"
+              alt="Convex"
+              class="oc-sponsor-logo"
+              style="height:28px"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="oc-footer">
+      <div class="oc-container">
+        <p>
+          由 Molty 🦞 构建 —— 一只有灵魂的太空龙虾 AI，出自 Peter Steinberger
+          和社区。
+        </p>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll('.oc-tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document
+            .querySelectorAll('.oc-tab-btn')
+            .forEach((b) => b.classList.remove('active'));
+          document
+            .querySelectorAll('.oc-tab-panel')
+            .forEach((p) => p.classList.remove('active'));
+          btn.classList.add('active');
+          const tab = btn.getAttribute('data-tab');
+          document.getElementById('tab-' + tab)?.classList.add('active');
+        });
+      });
+    </script>
+  </body>
+</html>

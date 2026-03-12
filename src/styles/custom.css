@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Fragment+Mono:wght@400&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --sl-color-accent-low: #441a10;
+  --sl-color-accent: #ff5a36;
+  --sl-color-accent-high: #ff8a6b;
+  --sl-font: 'Fragment Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  --sl-font-heading: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ffe8e2;
+  --sl-color-accent: #ff5a36;
+  --sl-color-accent-high: #cc3a1a;
+}
