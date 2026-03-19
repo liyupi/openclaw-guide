@@ -1,0 +1,232 @@
+---
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import Search from 'virtual:starlight/components/Search';
+import TabNav from '../components/TabNav.astro';
+
+const isLanding = Astro.url.pathname === '/';
+---
+
+<div class="header oc-header-custom">
+  <div class="title-wrapper sl-flex">
+    <SiteTitle />
+  </div>
+
+  {/* Starlight Search — hidden but keeps Pagefind modal in DOM */}
+  <div class="oc-search-hidden">
+    <Search />
+  </div>
+
+  {/* Styled search trigger */}
+  <button class="oc-doc-search" id="oc-doc-search" type="button" aria-label="搜索文档">
+    <svg class="oc-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span class="oc-search-placeholder">搜索</span>
+    <kbd class="oc-search-kbd">⌘K</kbd>
+  </button>
+
+  <div class="oc-doc-right print:hidden">
+    <div class="oc-qr-wrap">
+      <button type="button" class="oc-header-link oc-qr-trigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>OpenClaw交流群</span>
+      </button>
+      <div class="oc-qr-popup">
+        <img src="/assets/openclaw-wechat-qr.png" alt="OpenClaw 交流群二维码" width="240" height="240" />
+      </div>
+    </div>
+    <a href="https://ai.codefather.cn" target="_blank" rel="noopener noreferrer" class="oc-header-link">
+      <img src="https://www.codefather.cn/logo.png" alt="" width="20" height="20" class="oc-header-link-icon" loading="lazy"/>
+      <span>鱼皮AI导航</span>
+    </a>
+    <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" class="oc-header-link">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <span>GitHub</span>
+    </a>
+    <button class="oc-header-theme-btn" type="button" id="doc-theme-toggle" aria-label="切换颜色主题">
+      <span id="doc-theme-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+(() => {
+  // --- Search trigger: click the real Pagefind button (remove disabled first) ---
+  const searchBtn = document.getElementById('oc-doc-search');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const realBtn = document.querySelector('site-search button[data-open-modal]');
+      if (realBtn) {
+        realBtn.removeAttribute('disabled');
+        realBtn.click();
+      }
+    });
+  }
+
+  // --- Theme toggle (synced with landing page via starlight-theme key) ---
+  const KEY = 'starlight-theme';
+  const btn = document.getElementById('doc-theme-toggle');
+  const icon = document.getElementById('doc-theme-icon');
+  if (!btn || !icon) return;
+
+  function getTheme() {
+    return document.documentElement.dataset.theme || 'dark';
+  }
+  function applyIcon() {
+    icon.textContent = getTheme() === 'dark' ? '☀️' : '🌙';
+  }
+  applyIcon();
+
+  btn.addEventListener('click', () => {
+    const next = getTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    localStorage.setItem(KEY, next);
+    applyIcon();
+    // Sync Starlight's pickers if present
+    if (typeof StarlightThemeProvider !== 'undefined') {
+      StarlightThemeProvider.updatePickers(next);
+    }
+  });
+})();
+</script>
+
+{!isLanding && <TabNav />}
+
+<style>
+  .oc-header-custom {
+    display: flex;
+    gap: var(--sl-nav-gap);
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    overflow: clip;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .oc-search-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .oc-doc-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 480px;
+    justify-self: center;
+    padding: 6px 14px;
+    height: 34px;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-gray-3);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  .oc-doc-search:hover {
+    border-color: var(--sl-color-gray-3);
+  }
+
+  .oc-search-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
+  .oc-search-placeholder { flex: 1; text-align: left; user-select: none; }
+  .oc-search-kbd {
+    font-family: var(--__sl-font-mono);
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--sl-color-gray-5);
+    background: var(--sl-color-black);
+    color: var(--sl-color-gray-3);
+    line-height: 1;
+  }
+
+  .oc-doc-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .oc-header-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  .oc-header-link:hover { color: var(--sl-color-white); }
+  .oc-header-link svg { width: 20px; height: 20px; }
+  .oc-header-link-icon { width: 20px; height: 20px; border-radius: 4px; object-fit: contain; }
+
+  .oc-qr-wrap { position: relative; }
+  .oc-qr-trigger { background: none; border: none; cursor: pointer; padding: 0; }
+  .oc-qr-popup {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--sl-color-bg-nav, #1a1a2e);
+    border: 1px solid var(--sl-color-gray-5);
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    z-index: 200;
+  }
+  .oc-qr-popup img { display: block; border-radius: 8px; }
+  .oc-qr-wrap:hover .oc-qr-popup { display: block; }
+
+  .oc-header-theme-btn {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+  }
+  .oc-header-theme-btn:hover {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-white);
+  }
+
+  @media (min-width: 50rem) {
+    .oc-header-custom {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-content: center;
+    }
+  }
+  @media (max-width: 50rem) {
+    .oc-doc-search { flex: 1; }
+    .oc-header-link span { display: none; }
+    .oc-doc-right { gap: 10px; }
+    .oc-search-placeholder { display: none; }
+  }
+  @media (max-width: 30rem) {
+    .oc-doc-search { padding: 4px 10px; }
+    .oc-search-kbd { display: none; }
+  }
+</style>

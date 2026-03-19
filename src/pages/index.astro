@@ -1,0 +1,664 @@
+---
+import '../styles/landing.css';
+import { tabs } from '../data/navigation.mjs';
+
+const testimonials_row1 = [
+  { user: 'therno', quote: '"它在运营我的公司。"' },
+  { user: 'karpathy', quote: '"阅读体验很棒，谢谢。喜欢 Oracle 和 Claw。"' },
+  { user: 'davemorin', quote: '"我甚至不知道该怎么称呼 OpenClaw。这是全新的事物。用了几周后，这是自 ChatGPT 发布以来，我第一次感觉自己活在未来。"' },
+  { user: 'crossiBuilds', quote: '"Siri 本该成为的样子。而且远不止于此。"' },
+  { user: 'KrauseFx', quote: '"@steipete 用 OpenClaw 做出的东西超乎想象。"' },
+  { user: 'Hesamation', quote: '"开源社区造了一个比 Siri 更好的版本，而 Apple 在这上面躺了好几年。"' },
+  { user: 'nofil_ai', quote: '"OpenClaw 就是 Jarvis。它已经存在了。"' },
+  { user: 'cnakazawa', quote: '"OpenClaw 是很久以来第一个让我不断去 GitHub 查看新版本的\u2018软件\u2019。难以言表。"' },
+];
+const testimonials_row2 = [
+  { user: 'tobi_bsf', quote: '"用了 OpenClaw 一周，真的感觉像早期 AGI。"' },
+  { user: 'Dimillian', quote: '"Anthropic 或 OpenAI 这样的巨头造不出这个。大公司的运作方式不可能做到。"' },
+  { user: 'lycfyi', quote: '"AI 是队友，不是工具。数字员工的终局已经到来。"' },
+  { user: 'snopoke', quote: '"感觉就像 20 年前用 Linux 对比 Windows —— 你掌控一切。"' },
+  { user: 'conradsagewiz', quote: '"遛狗时用手机通过 Telegram 让它在电脑上用 Codex CLI 创建规格文件。"' },
+  { user: 'dreetje', quote: '"我对 OpenClaw 上瘾了。它已经成为我日常生活不可或缺的部分。"' },
+  { user: 'danpeguine', quote: '"你的上下文和技能存在你自己的电脑上。它是公司助手、家庭助手、团队工具。"' },
+  { user: 'robmartinson', quote: '"太疯狂了。OpenClaw 是超能力。"' },
+];
+
+const sponsors = [
+  { name: 'OpenAI', logo: '/assets/sponsors/openai.svg', url: 'https://openai.com', cls: 'invert-on-light' },
+  { name: 'Vercel', logoDark: '/assets/sponsors/vercel.svg', logoLight: '/assets/sponsors/vercel.svg', url: 'https://vercel.com', cls: 'invert-on-light' },
+  { name: 'Blacksmith', logo: '/assets/sponsors/blacksmith.svg', url: 'https://blacksmith.sh', cls: 'invert-on-light' },
+  { name: 'Convex', logo: '/assets/sponsors/convex.svg', url: 'https://www.convex.dev', cls: 'invert-on-light' },
+];
+---
+
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>OpenClaw 中文网 — 真正能做事的开源 AI 助手</title>
+  <meta name="description" content="OpenClaw 是开源自托管的个人 AI 智能体，支持 WhatsApp、Telegram、Discord、飞书、钉钉、企业微信等 20+ 聊天平台。" />
+  <link rel="icon" href="/assets/pixel-lobster.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <script is:inline>
+    (() => {
+      const key = 'starlight-theme';
+      const saved = localStorage.getItem(key);
+      const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    })();
+  </script>
+</head>
+<body>
+
+<!-- Site Header -->
+<header class="oc-site-header">
+  <div class="oc-header-bar">
+    <a href="/" class="oc-header-logo" aria-label="OpenClaw 中文网首页">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+        <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="#ff4d4d"/>
+        <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="#ff4d4d"/>
+        <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="#ff4d4d"/>
+        <circle cx="45" cy="35" r="6" fill="#050810"/>
+        <circle cx="75" cy="35" r="6" fill="#050810"/>
+        <circle cx="46" cy="34" r="2" fill="#00e5cc"/>
+        <circle cx="76" cy="34" r="2" fill="#00e5cc"/>
+      </svg>
+    </a>
+
+    <div class="oc-header-search" id="header-search" role="button" tabindex="0" aria-label="搜索文档">
+      <svg class="oc-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="oc-search-placeholder">Search ...</span>
+      <kbd class="oc-search-kbd">⌘K</kbd>
+    </div>
+
+    <nav class="oc-header-links">
+      <div class="oc-qr-wrap">
+        <button type="button" class="oc-header-link oc-qr-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>OpenClaw交流群</span>
+        </button>
+        <div class="oc-qr-popup">
+          <img src="/assets/openclaw-wechat-qr.png" alt="OpenClaw 交流群二维码" width="240" height="240" />
+        </div>
+      </div>
+      <a href="https://ai.codefather.cn" target="_blank" rel="noopener noreferrer" class="oc-header-link">
+        <img src="https://www.codefather.cn/logo.png" alt="" width="20" height="20" class="oc-header-link-icon" loading="lazy"/>
+        <span>鱼皮AI导航</span>
+      </a>
+      <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" class="oc-header-link">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="oc-header-theme-btn" type="button" id="theme-toggle" aria-label="切换颜色主题">
+        <span id="theme-icon" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </div>
+
+  <nav class="oc-header-tabs">
+    <div class="oc-header-tabs-inner">
+      {tabs.map((tab) => (
+        <a class="oc-header-tab" href={tab.firstPage}>{tab.label}</a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<!-- Background layers -->
+<div class="oc-stars"></div>
+<div class="oc-nebula"></div>
+
+<main class="oc-container">
+
+  <!-- Hero -->
+  <header class="oc-hero">
+    <div class="oc-lobster-icon" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="url(#lobster-gradient)" class="claw-body" />
+        <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="url(#lobster-gradient)" class="claw-left" />
+        <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="url(#lobster-gradient)" class="claw-right" />
+        <path d="M45 15 Q35 5 30 8" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" class="antenna" />
+        <path d="M75 15 Q85 5 90 8" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" class="antenna" />
+        <circle cx="45" cy="35" r="6" fill="#050810" class="eye" />
+        <circle cx="75" cy="35" r="6" fill="#050810" class="eye" />
+        <circle cx="46" cy="34" r="2" fill="#00e5cc" class="eye-glow" />
+        <circle cx="76" cy="34" r="2" fill="#00e5cc" class="eye-glow" />
+        <defs>
+          <linearGradient id="lobster-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--logo-gradient-start)" />
+            <stop offset="100%" stop-color="var(--logo-gradient-end)" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <h1 class="oc-title">
+      <span class="oc-title-main">OpenClaw 中文网</span>
+    </h1>
+    <p class="oc-tagline">The AI that actually does things.</p>
+    <p class="oc-description">
+      清理收件箱、发送邮件、管理日历、自动值机。<br />
+      通过 WhatsApp、Telegram 或任何你已经在用的聊天应用。
+    </p>
+  </header>
+
+  <!-- Latest Post -->
+  <section class="oc-latest-post">
+    <a href="https://openclaw.ai/blog/virustotal-partnership" target="_blank" rel="noopener noreferrer" class="oc-latest-post-card">
+      <span class="oc-latest-post-badge">New</span>
+      <span class="oc-latest-post-title">OpenClaw 与 VirusTotal 合作保障 Skill 安全</span>
+      <span class="oc-latest-post-link">→</span>
+    </a>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="oc-testimonials">
+    <div class="oc-section-header">
+      <h2 class="oc-section-title"><span class="oc-accent">⟩</span> 用户评价</h2>
+      <a href="https://openclaw.ai/shoutouts" target="_blank" rel="noopener noreferrer" class="oc-section-link">查看全部 →</a>
+    </div>
+    <div class="oc-testimonials-track">
+      <div class="oc-testimonials-row oc-row-1">
+        {[...testimonials_row1, ...testimonials_row1].map(t => (
+          <div class="oc-testimonial-card">
+            <img src={`https://unavatar.io/x/${t.user}`} alt={t.user} class="oc-testimonial-avatar" loading="lazy" />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">{t.quote}</p>
+              <span class="oc-testimonial-author">@{t.user}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="oc-testimonials-row oc-row-2">
+        {[...testimonials_row2, ...testimonials_row2].map(t => (
+          <div class="oc-testimonial-card">
+            <img src={`https://unavatar.io/x/${t.user}`} alt={t.user} class="oc-testimonial-avatar" loading="lazy" />
+            <div class="oc-testimonial-content">
+              <p class="oc-testimonial-quote">{t.quote}</p>
+              <span class="oc-testimonial-author">@{t.user}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section class="oc-quickstart">
+    <div class="oc-section-header">
+      <h2 class="oc-section-title"><span class="oc-accent">⟩</span> 快速开始</h2>
+    </div>
+    <div class="oc-code-block">
+      <div class="oc-code-header">
+        <span class="oc-code-dot"></span>
+        <span class="oc-code-dot"></span>
+        <span class="oc-code-dot"></span>
+        <div class="oc-mode-switch">
+          <button class="oc-mode-btn active" data-mode="oneliner">一键安装</button>
+          <button class="oc-mode-btn" data-mode="npm">npm</button>
+          <button class="oc-mode-btn" data-mode="hackable">Hackable</button>
+          <button class="oc-mode-btn" data-mode="macos">macOS</button>
+        </div>
+        <div class="oc-pm-switch" id="pm-switch" style="display:none;">
+          <button class="oc-pm-btn active" data-pm="npm">npm</button>
+          <button class="oc-pm-btn" data-pm="pnpm">pnpm</button>
+        </div>
+        <div class="oc-hackable-switch" id="hackable-switch" style="display:none;">
+          <button class="oc-hackable-btn active" data-hackable="installer">installer</button>
+          <button class="oc-hackable-btn" data-hackable="pnpm">pnpm</button>
+        </div>
+        <div class="oc-os-switch" id="os-switch">
+          <button class="oc-os-btn active" data-os="unix">macOS/Linux</button>
+          <button class="oc-os-btn" data-os="windows">Windows</button>
+        </div>
+        <div class="oc-beta-switch" id="beta-switch">
+          <button class="oc-beta-btn" id="beta-btn" data-beta="false">
+            <span class="oc-beta-label">β</span>
+            <span class="oc-beta-text">Beta</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- One-liner -->
+      <div id="code-oneliner" class="oc-code-content">
+        <div class="oc-code-line comment" id="oneliner-comment"># 适用于所有平台。macOS 首次运行可能需要管理员权限安装 Homebrew。</div>
+        <div class="oc-code-line cmd">
+          <span class="oc-code-prompt">$</span>
+          <span class="oc-code-cmd" id="oneliner-cmd">curl -fsSL https://openclaw.ai/install.sh | bash</span>
+          <button class="oc-copy-btn" data-cmd="curl -fsSL https://openclaw.ai/install.sh | bash" title="复制">
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- npm -->
+      <div id="code-npm" class="oc-code-content" style="display:none;">
+        <div class="oc-code-line comment"># 安装 OpenClaw</div>
+        <div class="oc-code-line cmd">
+          <span class="oc-code-prompt">$</span>
+          <span class="oc-code-cmd" id="npm-install-cmd">npm i -g openclaw</span>
+          <button class="oc-copy-btn" data-cmd="npm i -g openclaw" title="复制">
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+        <div class="oc-code-line comment"># 开始使用</div>
+        <div class="oc-code-line cmd">
+          <span class="oc-code-prompt">$</span>
+          <span class="oc-code-cmd">openclaw onboard</span>
+          <button class="oc-copy-btn" data-cmd="openclaw onboard" title="复制">
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hackable -->
+      <div id="code-hackable" class="oc-code-content" style="display:none;">
+        <div class="oc-code-line comment" id="hackable-comment"># 给喜欢读源码的你</div>
+        <div class="oc-code-line cmd" id="hackable-line1">
+          <span class="oc-code-prompt">$</span>
+          <span class="oc-code-cmd" id="hackable-cmd1">curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git</span>
+          <button class="oc-copy-btn" data-cmd="curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git" title="复制">
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- macOS App -->
+      <div id="code-macos" class="oc-code-content" style="display:none;">
+        <div class="oc-macos-app">
+          <div>
+            <div class="oc-macos-tagline">配套应用（Beta）</div>
+            <div class="oc-macos-subtitle">菜单栏快捷访问你的龙虾。与 CLI 完美搭配。</div>
+          </div>
+          <a href="https://github.com/openclaw/openclaw/releases/latest" target="_blank" rel="noopener" class="oc-macos-download-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            下载 macOS 版
+          </a>
+          <div class="oc-macos-meta">需要 macOS 15+ · Universal Binary</div>
+        </div>
+      </div>
+    </div>
+    <p class="oc-quickstart-note">适用于 macOS、Windows 和 Linux。一键安装会自动安装 Node.js 和所有依赖。</p>
+  </section>
+
+  <!-- Features -->
+  <section class="oc-features">
+    <div class="oc-section-header">
+      <h2 class="oc-section-title"><span class="oc-accent">⟩</span> 核心功能</h2>
+    </div>
+    <div class="oc-features-grid">
+      <a class="oc-feature-card" href="/start/getting-started">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+        <h3 class="oc-feature-title">运行在你的电脑上</h3>
+        <p class="oc-feature-desc">Mac、Windows 或 Linux。Anthropic、OpenAI 或本地模型。默认私有 —— 你的数据只属于你。</p>
+      </a>
+      <a class="oc-feature-card" href="/channels">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg></div>
+        <h3 class="oc-feature-title">支持所有聊天应用</h3>
+        <p class="oc-feature-desc">WhatsApp、Telegram、Discord、Slack、Signal 或 iMessage。私聊和群聊都能用。</p>
+      </a>
+      <a class="oc-feature-card" href="/concepts/memory">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg></div>
+        <h3 class="oc-feature-title">持久记忆</h3>
+        <p class="oc-feature-desc">记住你，成为独一无二属于你的 AI。你的偏好、你的上下文、你的助手。</p>
+      </a>
+      <a class="oc-feature-card" href="/tools/browser">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+        <h3 class="oc-feature-title">浏览器控制</h3>
+        <p class="oc-feature-desc">浏览网页、填写表单、从任意网站提取数据。</p>
+      </a>
+      <a class="oc-feature-card" href="/tools/exec">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <h3 class="oc-feature-title">完整系统访问</h3>
+        <p class="oc-feature-desc">读写文件、运行 Shell 命令、执行脚本。完全访问或沙箱隔离 —— 你来选。</p>
+      </a>
+      <a class="oc-feature-card" href="/tools/skills">
+        <div class="oc-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--coral-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg></div>
+        <h3 class="oc-feature-title">技能与插件</h3>
+        <p class="oc-feature-desc">使用社区技能或自己构建。它甚至能自己编写新技能。</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Integrations -->
+  <section class="oc-integrations">
+    <div class="oc-section-header">
+      <h2 class="oc-section-title"><span class="oc-accent">⟩</span> 全面集成</h2>
+    </div>
+    <div class="oc-integrations-row">
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> WhatsApp</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#26A5E4"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> Telegram</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg> Discord</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#E01E5A"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg> Slack</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#3A76F0"><path d="M4.186 2.592C5.57.9 7.925.058 10.296 0h.348c2.47.067 4.862.972 6.321 2.768.385.468.724.99.994 1.554-.647.378-1.265.806-1.843 1.283a7.7 7.7 0 0 0-1.206 1.272c-.766-.88-1.8-1.534-2.98-1.756a5.26 5.26 0 0 0-1.625-.015c-1.162.183-2.205.788-2.946 1.658-.788.918-1.21 2.113-1.2 3.313-.003 1.217.425 2.418 1.2 3.338.588.701 1.358 1.24 2.223 1.524.826.275 1.724.316 2.57.11.914-.22 1.727-.755 2.293-1.49.33-.406.56-.876.718-1.375-1.078-.032-2.156-.012-3.234-.032-.004-.667-.003-1.333-.003-2h5.662c.113.8.14 1.61.073 2.414-.11 1.342-.576 2.66-1.38 3.723-.923 1.22-2.248 2.1-3.722 2.468-1.404.352-2.9.323-4.296-.038-1.444-.371-2.762-1.14-3.77-2.215C1.335 14.573.507 12.672.41 10.703.313 9.03.674 7.333 1.457 5.868c.667-1.23 1.608-2.311 2.729-3.14v-.137z"/></svg> Signal</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> iMessage</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#D97757"><path d="M4.603 15.246c-.408.15-.947.196-1.46.106a2.662 2.662 0 0 1-.738-.257 1.157 1.157 0 0 0 .074-.085l3.306-4.392a.63.63 0 0 0-.145-.86.57.57 0 0 0-.818.152L1.46 14.353c-.26-.364-.406-.795-.418-1.242a2.743 2.743 0 0 1 .591-1.788l2.118-2.814a4.16 4.16 0 0 1 2.16-1.489l2.768-.783a.617.617 0 0 0 .438-.662.585.585 0 0 0-.641-.5l-2.768.783c-.261.074-.517.167-.764.278l1.489-1.978a2.742 2.742 0 0 1 1.66-1.015c.673-.11 1.359.026 1.907.397.02.025.042.05.06.076L6.06 9.01a.63.63 0 0 0 .144.86.57.57 0 0 0 .818-.152l3.36-4.465c.354.262.617.637.756 1.065.164.506.13 1.058-.094 1.543L8.2 12.744a4.16 4.16 0 0 1-2.16 1.489l-2.769.783a.617.617 0 0 0-.437.661c.04.32.326.549.64.5l2.769-.783c.261-.074.516-.167.764-.278l-1.49 1.978a2.54 2.54 0 0 1-.914.652zm14.794-6.492c.408-.15.947-.196 1.46-.106.261.047.508.136.738.257a1.157 1.157 0 0 0-.074.085l-3.306 4.392a.63.63 0 0 0 .145.86.57.57 0 0 0 .818-.152l3.362-4.443c.26.364.406.795.418 1.242a2.743 2.743 0 0 1-.591 1.788l-2.118 2.814a4.16 4.16 0 0 1-2.16 1.489l-2.769.783a.617.617 0 0 0-.437.662c.04.319.326.548.64.5l2.769-.784c.261-.074.517-.167.764-.278l-1.49 1.978a2.742 2.742 0 0 1-1.66 1.015 2.556 2.556 0 0 1-1.906-.397 1.157 1.157 0 0 0-.06-.076l3-3.987a.63.63 0 0 0-.144-.86.57.57 0 0 0-.818.152l-3.36 4.465a2.741 2.741 0 0 1-.756-1.065 2.743 2.743 0 0 1 .094-1.543l2.844-4.883a4.16 4.16 0 0 1 2.16-1.489l2.768-.783a.617.617 0 0 0 .438-.661.585.585 0 0 0-.641-.5l-2.769.783c-.26.074-.516.167-.764.278l1.49-1.978a2.54 2.54 0 0 1 .914-.652z"/></svg> Claude</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#10A37F"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg> GPT</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg> Spotify</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#4285F4"><path d="M12 22l-1.5-1.5L12 19l1.5 1.5zM20 14a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8-6a6 6 0 0 1 6 6h-2a4 4 0 0 0-8 0H6a6 6 0 0 1 6-6z"/></svg> Hue</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#7C3AED"><path d="M11.684.012C5.186.24.001 5.59.001 12.2c0 3.378 1.25 6.46 3.34 8.828l.053.06c.416.396 1.054.69 1.753.784.392.053.74-.02 1.037-.182l.018-.011a1.49 1.49 0 0 0 .596-.903c.04-.184.052-.362.036-.535l-.002-.025a11.705 11.705 0 0 1-.065-1.217c0-.282.01-.562.031-.84l.003-.037c.026-.288.13-.566.328-.783.202-.222.46-.35.73-.388h.032c1.397-.082 2.637-.51 3.659-1.186.027-.018.056-.035.084-.054a5.72 5.72 0 0 0 1.814-2.012l.016-.03c.383-.72.626-1.52.718-2.377l.004-.048c.02-.227.03-.457.03-.69 0-2.254-.816-4.073-2.371-5.283a7.616 7.616 0 0 0-3.502-1.573 10.967 10.967 0 0 0-1.928-.178L12 4.106c-.416 0-.832.023-1.24.068a7.563 7.563 0 0 0-4.24 1.963 7.198 7.198 0 0 0-2.226 4.41c-.062.466-.093.94-.093 1.42 0 .965.14 1.901.406 2.787l.008.024a9.413 9.413 0 0 0 1.51 2.863c.118.148.073.35-.077.451l-.008.005a.286.286 0 0 1-.378-.038 10.23 10.23 0 0 1-1.857-3.393A10.14 10.14 0 0 1 3.34 12c0-1.13.178-2.222.51-3.249A9.233 9.233 0 0 1 7.24 4.024 9.652 9.652 0 0 1 12 2.498c.49 0 .982.032 1.468.098a9.625 9.625 0 0 1 4.37 1.935c1.938 1.52 3.04 3.813 3.04 6.488 0 .29-.015.576-.044.857-.115 1.09-.42 2.11-.906 3.015a7.718 7.718 0 0 1-2.427 2.733c-1.27.864-2.77 1.413-4.408 1.569-.064.005-.128.01-.193.013a1.578 1.578 0 0 0-1.327.847c-.166.407-.147.847.008 1.262l.003.006c.135.37.275.746.341 1.147.042.257.051.515.025.768-.023.216-.122.429-.291.581a.91.91 0 0 1-.372.208l-.025.007c-.178.046-.46.098-.86.098-.198 0-.412-.016-.636-.047l-.027-.004c-.476-.088-.888-.262-1.188-.452l-.029-.019A12.088 12.088 0 0 1 .001 12.2C.001 5.438 5.344.053 12 .001l-.316.011z"/></svg> Obsidian</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Twitter</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="var(--coral-bright)"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--coral-bright)" stroke-width="2"/><path d="M2 12h20" fill="none" stroke="var(--coral-bright)" stroke-width="2"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="none" stroke="var(--coral-bright)" stroke-width="2"/></svg> Browser</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="#EA4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg> Gmail</span>
+      <span class="oc-integration-pill"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg> GitHub</span>
+    </div>
+    <div class="oc-integrations-links">
+      <a href="https://openclaw.ai/integrations" target="_blank" rel="noopener noreferrer">查看全部 50+ 集成 →</a>
+      <span class="oc-link-separator">·</span>
+      <a href="/start/showcase">查看社区作品 →</a>
+    </div>
+  </section>
+
+  <!-- Press -->
+  <section class="oc-press">
+    <div class="oc-section-header">
+      <h2 class="oc-section-title"><span class="oc-accent">⟩</span> 媒体报道</h2>
+    </div>
+    <div class="oc-press-grid">
+      <a class="oc-press-card featured" href="https://www.macstories.net/stories/clawdbot-showed-me-what-the-future-of-personal-ai-assistants-looks-like/" target="_blank" rel="noopener noreferrer">
+        <div class="oc-press-logo">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="oc-press-icon"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <span class="oc-press-name">MacStories</span>
+        </div>
+        <blockquote class="oc-press-quote">"OpenClaw 向我展示了个人 AI 助手的未来"</blockquote>
+        <span class="oc-press-author">Federico Viticci</span>
+      </a>
+      <a class="oc-press-card" href="https://www.starryhope.com/minipcs/clawdbot-mac-mini-ai-agent-trend/" target="_blank" rel="noopener noreferrer">
+        <div class="oc-press-logo">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="oc-press-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span class="oc-press-name">StarryHope</span>
+        </div>
+        <blockquote class="oc-press-quote">"龙虾接管：为什么开发者纷纷购买 Mac Mini 来运行自己的 AI 代理"</blockquote>
+        <span class="oc-press-author">Jim Mendenhall</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA Grid -->
+  <nav class="oc-cta-grid">
+    <a class="oc-cta oc-cta-discord" href="https://discord.gg/clawd" target="_blank" rel="noopener noreferrer">
+      <svg class="oc-cta-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      <span class="oc-cta-label">Discord</span>
+      <span class="oc-cta-sub">加入社区</span>
+    </a>
+    <a class="oc-cta oc-cta-docs" href="/docs-home">
+      <svg class="oc-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      <span class="oc-cta-label">中文文档</span>
+      <span class="oc-cta-sub">阅读指南</span>
+    </a>
+    <a class="oc-cta oc-cta-github" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">
+      <svg class="oc-cta-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <span class="oc-cta-label">GitHub</span>
+      <span class="oc-cta-sub">查看源码</span>
+    </a>
+    <a class="oc-cta oc-cta-skills" href="https://clawhub.com" target="_blank" rel="noopener noreferrer">
+      <svg class="oc-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span class="oc-cta-label">ClawHub</span>
+      <span class="oc-cta-sub">下载技能</span>
+    </a>
+  </nav>
+
+  <!-- Newsletter -->
+  <section class="oc-newsletter">
+    <div class="oc-newsletter-content">
+      <h2 class="oc-newsletter-title">
+        <span class="oc-accent">⟩</span> 订阅更新
+      </h2>
+      <p class="oc-newsletter-desc">获取新功能、集成和龙虾智慧的最新动态。无垃圾邮件，随时退订。</p>
+      <form class="oc-newsletter-form" action="https://buttondown.com/api/emails/embed-subscribe/steipete" method="post" target="_blank">
+        <input type="hidden" name="tag" value="clawdbot" />
+        <input type="email" name="email" placeholder="your@email.com" required class="oc-newsletter-input" aria-label="邮箱地址" />
+        <button type="submit" class="oc-newsletter-btn">
+          订阅
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Sponsors -->
+  <section class="oc-sponsors">
+    <h2 class="oc-section-title" style="margin-bottom:24px;">
+      <span class="oc-accent">⟩</span> 赞助商
+    </h2>
+    <div class="oc-sponsors-grid">
+      {sponsors.map(s => (
+        <a href={s.url} target="_blank" rel="noopener noreferrer" class="oc-sponsor-card">
+          <img src={s.logo || s.logoDark} alt={s.name} class={`oc-sponsor-logo ${s.cls || ''}`} loading="lazy" />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="oc-footer">
+    <nav class="oc-footer-nav">
+      <a href="https://openclaw.ai/blog" target="_blank" rel="noopener">博客</a>
+      <span class="oc-footer-separator">·</span>
+      <a href="https://openclaw.ai/showcase" target="_blank" rel="noopener">展示</a>
+      <span class="oc-footer-separator">·</span>
+      <a href="https://openclaw.ai/shoutouts" target="_blank" rel="noopener">推荐</a>
+      <span class="oc-footer-separator">·</span>
+      <a href="https://openclaw.ai/integrations" target="_blank" rel="noopener">集成</a>
+      <span class="oc-footer-separator">·</span>
+      <a href="https://trust.openclaw.ai/" target="_blank" rel="noopener">信任</a>
+    </nav>
+    <p>
+      由 <a href="https://molty.me" target="_blank" rel="noopener">Molty</a> 🦞 构建 —— 一只有<a href="https://soul.md" target="_blank" rel="noopener">灵魂</a>的太空龙虾 AI，出自 <a href="https://steipete.me" target="_blank" rel="noopener">Peter Steinberger</a> 和<a href="https://github.com/openclaw/openclaw#community" target="_blank" rel="noopener">社区</a>。
+    </p>
+    <p class="disclaimer">前身为 Clawdbot 和 Moltbot。独立项目，与 Anthropic 无关。</p>
+  </footer>
+
+</main>
+
+<script is:inline>
+// Theme toggle
+(() => {
+  const KEY = 'starlight-theme';
+  const btn = document.getElementById('theme-toggle');
+  const icon = document.getElementById('theme-icon');
+
+  function getTheme() {
+    return document.documentElement.dataset.theme || 'dark';
+  }
+  function applyIcon() {
+    icon.textContent = getTheme() === 'dark' ? '☀️' : '🌙';
+  }
+  applyIcon();
+
+  btn.addEventListener('click', () => {
+    const next = getTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    document.documentElement.style.colorScheme = next;
+    localStorage.setItem(KEY, next);
+    applyIcon();
+  });
+})();
+
+// Search bar -> jump to docs
+(() => {
+  const searchEl = document.getElementById('header-search');
+  if (searchEl) {
+    searchEl.addEventListener('click', () => {
+      window.location.href = '/docs-home';
+    });
+    searchEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.location.href = '/docs-home';
+      }
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      window.location.href = '/docs-home';
+    }
+  });
+})();
+
+// QuickStart tab switching
+(() => {
+  const modes = document.querySelectorAll('.oc-mode-btn');
+  const panels = {
+    oneliner: document.getElementById('code-oneliner'),
+    npm: document.getElementById('code-npm'),
+    hackable: document.getElementById('code-hackable'),
+    macos: document.getElementById('code-macos'),
+  };
+  const pmSwitch = document.getElementById('pm-switch');
+  const osSwitch = document.getElementById('os-switch');
+  const hackableSwitch = document.getElementById('hackable-switch');
+  const betaSwitch = document.getElementById('beta-switch');
+
+  function showMode(mode) {
+    Object.values(panels).forEach(p => { if (p) p.style.display = 'none'; });
+    if (panels[mode]) panels[mode].style.display = '';
+    modes.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+
+    pmSwitch.style.display = mode === 'npm' ? '' : 'none';
+    osSwitch.style.display = mode === 'oneliner' ? '' : 'none';
+    hackableSwitch.style.display = mode === 'hackable' ? '' : 'none';
+    betaSwitch.style.display = (mode === 'macos') ? 'none' : '';
+  }
+
+  modes.forEach(btn => {
+    btn.addEventListener('click', () => showMode(btn.dataset.mode));
+  });
+
+  // PM switch
+  document.querySelectorAll('.oc-pm-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.oc-pm-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      refreshCommands();
+    });
+  });
+
+  // OS switch
+  document.querySelectorAll('.oc-os-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.oc-os-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const commentEl = document.getElementById('oneliner-comment');
+      if (btn.dataset.os === 'windows') {
+        commentEl.textContent = '# Windows (PowerShell，以管理员身份运行)';
+      } else {
+        commentEl.textContent = '# 适用于所有平台。macOS 首次运行可能需要管理员权限安装 Homebrew。';
+      }
+      refreshCommands();
+    });
+  });
+
+  // Hackable switch
+  document.querySelectorAll('.oc-hackable-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.oc-hackable-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const commentEl = document.getElementById('hackable-comment');
+      if (btn.dataset.hackable === 'pnpm') {
+        commentEl.textContent = '# 你显然知道自己在做什么';
+      } else {
+        commentEl.textContent = '# 给喜欢读源码的你';
+      }
+      refreshCommands();
+    });
+  });
+
+  // Beta toggle
+  const betaBtn = document.getElementById('beta-btn');
+  const betaCommands = {
+    oneliner: {
+      unix:    { stable: 'curl -fsSL https://openclaw.ai/install.sh | bash', beta: 'curl -fsSL https://openclaw.ai/install.sh | bash -s -- --beta' },
+      windows: { stable: 'irm https://openclaw.ai/install.ps1 | iex', beta: 'irm https://openclaw.ai/install.ps1 | iex -beta' },
+    },
+    npm: {
+      npm:  { install_stable: 'npm i -g openclaw',  install_beta: 'npm i -g openclaw@beta' },
+      pnpm: { install_stable: 'pnpm add -g openclaw', install_beta: 'pnpm add -g openclaw@beta' },
+    },
+    hackable: {
+      installer: { stable: 'curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git', beta: 'curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git --beta' },
+      pnpm:      { stable: 'git clone https://github.com/openclaw/openclaw.git && cd openclaw && pnpm install && pnpm run build', beta: 'git clone -b beta https://github.com/openclaw/openclaw.git && cd openclaw && pnpm install && pnpm run build' },
+    },
+  };
+
+  function isBeta() { return betaBtn && betaBtn.dataset.beta === 'true'; }
+
+  function getActiveMode() {
+    const activeMode = document.querySelector('.oc-mode-btn.active');
+    return activeMode ? activeMode.dataset.mode : 'oneliner';
+  }
+
+  function refreshCommands() {
+    const beta = isBeta();
+    const mode = getActiveMode();
+
+    // Oneliner
+    const osBtn = document.querySelector('.oc-os-btn.active');
+    const os = osBtn ? osBtn.dataset.os : 'unix';
+    const onelinerCmd = document.getElementById('oneliner-cmd');
+    if (onelinerCmd) {
+      const val = beta ? betaCommands.oneliner[os].beta : betaCommands.oneliner[os].stable;
+      onelinerCmd.textContent = val;
+      onelinerCmd.closest('.oc-code-line')?.querySelector('.oc-copy-btn')?.setAttribute('data-cmd', val);
+    }
+
+    // npm
+    const pmBtn = document.querySelector('.oc-pm-btn.active');
+    const pm = pmBtn ? pmBtn.dataset.pm : 'npm';
+    const npmInstallCmd = document.getElementById('npm-install-cmd');
+    if (npmInstallCmd) {
+      const val = beta ? betaCommands.npm[pm].install_beta : betaCommands.npm[pm].install_stable;
+      npmInstallCmd.textContent = val;
+      npmInstallCmd.closest('.oc-code-line')?.querySelector('.oc-copy-btn')?.setAttribute('data-cmd', val);
+    }
+
+    // Hackable
+    const hackBtn = document.querySelector('.oc-hackable-btn.active');
+    const hack = hackBtn ? hackBtn.dataset.hackable : 'installer';
+    const hackableCmd = document.getElementById('hackable-cmd1');
+    if (hackableCmd) {
+      const val = beta ? betaCommands.hackable[hack].beta : betaCommands.hackable[hack].stable;
+      hackableCmd.textContent = val;
+      hackableCmd.closest('.oc-code-line')?.querySelector('.oc-copy-btn')?.setAttribute('data-cmd', val);
+    }
+  }
+
+  if (betaBtn) {
+    betaBtn.addEventListener('click', () => {
+      const active = betaBtn.dataset.beta === 'true';
+      betaBtn.dataset.beta = active ? 'false' : 'true';
+      betaBtn.classList.toggle('active', !active);
+      refreshCommands();
+    });
+  }
+
+  // Copy buttons
+  document.querySelectorAll('.oc-copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const cmd = btn.dataset.cmd || btn.previousElementSibling?.textContent || '';
+      await navigator.clipboard.writeText(cmd.trim());
+      btn.classList.add('copied');
+      const copyIcon = btn.querySelector('.copy-icon');
+      const checkIcon = btn.querySelector('.check-icon');
+      if (copyIcon) copyIcon.style.display = 'none';
+      if (checkIcon) checkIcon.style.display = '';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        if (copyIcon) copyIcon.style.display = '';
+        if (checkIcon) checkIcon.style.display = 'none';
+      }, 2000);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

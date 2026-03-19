@@ -1,0 +1,118 @@
+---
+import { tabs, getActiveTab } from '../data/navigation.mjs';
+
+const pathname = Astro.url.pathname;
+const activeTab = getActiveTab(pathname);
+---
+
+<nav class="oc-tab-nav" data-active-tab={activeTab?.label}>
+  <div class="oc-tab-nav-inner">
+    {tabs.map((tab) => (
+      <a
+        class:list={['oc-tab-item', { active: tab.label === activeTab?.label }]}
+        href={tab.firstPage}
+        data-tab-indices={JSON.stringify(tab.groupIndices)}
+      >
+        {tab.label}
+      </a>
+    ))}
+    <div class="oc-tab-underline" />
+  </div>
+</nav>
+
+<script>
+  function initTabNav() {
+    const nav = document.querySelector('.oc-tab-nav');
+    if (!nav) return;
+
+    const underline = nav.querySelector('.oc-tab-underline');
+    const activeItem = nav.querySelector('.oc-tab-item.active');
+    if (!underline || !activeItem) return;
+
+    function updateUnderline(el) {
+      const navRect = nav.querySelector('.oc-tab-nav-inner').getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
+      underline.style.width = `${rect.width}px`;
+      underline.style.transform = `translateX(${rect.left - navRect.left}px)`;
+      underline.style.opacity = '1';
+    }
+
+    updateUnderline(activeItem);
+    window.addEventListener('resize', () => updateUnderline(activeItem));
+
+    // Filter sidebar groups based on active tab
+    const tabIndices = JSON.parse(activeItem.dataset.tabIndices || '[]');
+    const sidebarGroups = document.querySelectorAll('nav.sidebar-content > ul > li');
+    sidebarGroups.forEach((group, index) => {
+      if (tabIndices.includes(index)) {
+        group.style.display = '';
+      } else {
+        group.style.display = 'none';
+      }
+    });
+
+    // Scroll the active sidebar link into view
+    requestAnimationFrame(() => {
+      const activeLink = document.querySelector('.sidebar-content a[aria-current="page"]');
+      if (activeLink) {
+        activeLink.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+    });
+  }
+
+  // Run on initial load and on Astro view transitions
+  initTabNav();
+  document.addEventListener('astro:after-swap', initTabNav);
+</script>
+
+<style>
+  .oc-tab-nav {
+    width: 100%;
+    border-bottom: 1px solid var(--sl-color-hairline-light, var(--sl-color-gray-6));
+    background: var(--sl-color-bg-nav, var(--sl-color-bg));
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: var(--sl-nav-height);
+    z-index: 9;
+  }
+  .oc-tab-nav::-webkit-scrollbar { display: none; }
+
+  .oc-tab-nav-inner {
+    display: flex;
+    gap: 0;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+  }
+
+  .oc-tab-item {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .oc-tab-item:hover { color: var(--sl-color-white); }
+  .oc-tab-item.active { color: var(--sl-color-accent); }
+
+  .oc-tab-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--sl-color-accent);
+    border-radius: 2px;
+    opacity: 0;
+    transition: transform 0.26s ease, width 0.26s ease, opacity 0.16s ease;
+    pointer-events: none;
+  }
+
+  @media (max-width: 50rem) {
+    .oc-tab-item { padding: 0.5rem 0.7rem; font-size: 0.8rem; }
+  }
+</style>

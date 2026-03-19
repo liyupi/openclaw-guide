@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap');
+
+/* ============================================================
+   Dark Theme — match docs.openclaw.ai/zh-CN (Mintlify style)
+   ============================================================ */
+:root {
+  /* Accent — brand orange-red */
+  --sl-color-accent-low: #2a1410;
+  --sl-color-accent: #ff5a36;
+  --sl-color-accent-high: #ff8a6b;
+
+  /* Gray scale — pushed significantly darker */
+  --sl-color-white: hsl(0, 0%, 97%);
+  --sl-color-gray-1: hsl(220, 14%, 86%);
+  --sl-color-gray-2: hsl(220, 8%, 65%);
+  --sl-color-gray-3: hsl(220, 6%, 46%);
+  --sl-color-gray-4: hsl(220, 8%, 28%);
+  --sl-color-gray-5: hsl(220, 12%, 18%);
+  --sl-color-gray-6: hsl(220, 16%, 12%);
+  --sl-color-black: hsl(220, 20%, 6%);
+
+  /* Semantic surfaces */
+  --sl-color-bg: var(--sl-color-black);
+  --sl-color-bg-nav: hsl(220, 18%, 8%);
+  --sl-color-bg-sidebar: hsl(220, 18%, 8%);
+  --sl-color-bg-inline-code: hsl(220, 14%, 16%);
+  --sl-color-hairline-light: hsl(220, 12%, 16%);
+  --sl-color-hairline: hsl(220, 14%, 12%);
+
+  /* Fonts */
+  --sl-font: 'Noto Sans SC', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --sl-font-heading: 'Plus Jakarta Sans', 'Noto Sans SC', system-ui, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Tab nav height offset */
+  --oc-tab-height: 2.4rem;
+}
+
+/* ============================================================
+   Light Theme — restore full gray scale for light mode
+   ============================================================ */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #fff0eb;
+  --sl-color-accent: #e5421a;
+  --sl-color-accent-high: #b32e14;
+
+  --sl-color-white: hsl(224, 10%, 10%);
+  --sl-color-gray-1: hsl(224, 14%, 16%);
+  --sl-color-gray-2: hsl(224, 10%, 23%);
+  --sl-color-gray-3: hsl(224, 7%, 36%);
+  --sl-color-gray-4: hsl(224, 6%, 56%);
+  --sl-color-gray-5: hsl(224, 6%, 77%);
+  --sl-color-gray-6: hsl(224, 20%, 94%);
+  --sl-color-gray-7: hsl(224, 19%, 97%);
+  --sl-color-black: hsl(0, 0%, 100%);
+
+  --sl-color-bg: var(--sl-color-black);
+  --sl-color-bg-nav: var(--sl-color-gray-7);
+  --sl-color-bg-sidebar: var(--sl-color-bg);
+  --sl-color-bg-inline-code: var(--sl-color-gray-6);
+  --sl-color-hairline-light: var(--sl-color-gray-6);
+  --sl-color-hairline: var(--sl-color-gray-6);
+}
+
+/* ============================================================
+   Global refinements
+   ============================================================ */
+
+/* Smooth font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Header / Navbar
+   ============================================================ */
+header.header {
+  background: var(--sl-color-bg-nav) !important;
+  border-bottom: 1px solid var(--sl-color-hairline-light);
+  backdrop-filter: blur(12px);
+}
+
+/* Search button styling */
+site-search button[data-open-modal] {
+  border-color: var(--sl-color-gray-5);
+  background: var(--sl-color-gray-6);
+}
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+nav.sidebar-content {
+  font-size: var(--sl-text-sm);
+}
+
+/* Active sidebar link */
+.sidebar-content a[aria-current="page"],
+.sidebar-content a[aria-current="true"] {
+  background: var(--sl-color-accent-low) !important;
+  color: var(--sl-color-accent-high) !important;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* Sidebar link hover */
+.sidebar-content a:hover {
+  color: var(--sl-color-white);
+}
+
+/* Sidebar group label */
+.sidebar-content .top-level > li > details > summary,
+.sidebar-content .top-level > li > a {
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   Tab Navigation (below header) — sticky + layout offset
+   ============================================================ */
+.oc-tab-nav {
+  position: sticky;
+  top: var(--sl-nav-height);
+  z-index: 9;
+  background: var(--sl-color-bg-nav);
+  border-bottom: 1px solid var(--sl-color-hairline-light);
+}
+.oc-tab-item {
+  color: var(--sl-color-gray-3);
+  font-size: 0.82rem;
+}
+.oc-tab-item:hover {
+  color: var(--sl-color-white);
+}
+.oc-tab-item.active {
+  color: var(--sl-color-accent);
+}
+.oc-tab-underline {
+  background: var(--sl-color-accent);
+}
+
+/* Push main content & sidebars down for the tab nav */
+.main-frame {
+  padding-top: calc(var(--sl-nav-height) + var(--oc-tab-height) + var(--sl-mobile-toc-height)) !important;
+}
+
+.sidebar-pane {
+  inset-block-start: calc(var(--sl-nav-height) + var(--oc-tab-height)) !important;
+}
+
+@media (min-width: 72rem) {
+  .right-sidebar {
+    padding-top: calc(var(--sl-nav-height) + var(--oc-tab-height)) !important;
+  }
+}
+
+/* ============================================================
+   Cards — match Mintlify card aesthetic
+   ============================================================ */
+.card {
+  border-radius: 10px !important;
+  border-color: var(--sl-color-gray-5) !important;
+  background: var(--sl-color-gray-6) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card:hover {
+  border-color: var(--sl-color-accent) !important;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+  transform: translateY(-2px);
+}
+
+/* Card icon — colorful with rounded background */
+.card .icon {
+  border-radius: 8px !important;
+  padding: 0.35em !important;
+}
+
+/* Card title */
+.card .title {
+  font-size: var(--sl-text-lg) !important;
+}
+
+/* CardGrid spacing */
+.card-grid {
+  gap: 1.25rem !important;
+}
+
+/* ============================================================
+   Link Cards (used for navigation in docs-home)
+   ============================================================ */
+.sl-link-card {
+  border-radius: 10px;
+  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-color-gray-6);
+  transition: all 0.2s ease;
+}
+.sl-link-card:hover {
+  border-color: var(--sl-color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+}
+
+/* ============================================================
+   Aside / Callout — match Mintlify's left-border style
+   ============================================================ */
+.starlight-aside {
+  border-radius: 8px;
+  border-inline-start-width: 4px;
+}
+
+/* ============================================================
+   Code blocks
+   ============================================================ */
+.sl-markdown-content pre:not(:where(.not-content *)) {
+  border-radius: 8px;
+  border-color: var(--sl-color-gray-5);
+}
+
+/* Expressive code (if present) */
+.expressive-code {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.expressive-code .frame {
+  border-radius: 8px !important;
+}
+.expressive-code pre {
+  border-radius: 0 !important;
+}
+
+/* ============================================================
+   Inline code
+   ============================================================ */
+.sl-markdown-content code:not(:where(.not-content *)) {
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.875em;
+}
+
+/* ============================================================
+   Headings — match Mintlify's clean heading style
+   ============================================================ */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+  font-family: var(--sl-font-heading);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   Links — use accent color
+   ============================================================ */
+.sl-markdown-content a:not(:where(.not-content *)) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
+}
+
+/* ============================================================
+   Table of Contents (right side)
+   ============================================================ */
+starlight-toc a {
+  font-size: var(--sl-text-xs);
+  transition: color 0.15s ease;
+}
+starlight-toc a[aria-current="true"] {
+  color: var(--sl-color-accent-high);
+  font-weight: 500;
+}
+
+/* ============================================================
+   Steps component
+   ============================================================ */
+.sl-steps > li::before {
+  background: var(--sl-color-accent) !important;
+}
+
+/* ============================================================
+   Footer nav (prev/next)
+   ============================================================ */
+.pagination-links a {
+  border-radius: 10px;
+  border-color: var(--sl-color-gray-5);
+  transition: all 0.2s ease;
+}
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--sl-color-accent) 15%, transparent);
+}
+
+/* ============================================================
+   Scrollbar (WebKit)
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sl-color-gray-4);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sl-color-gray-3);
+}
+
+/* ============================================================
+   Mobile
+   ============================================================ */
+@media (max-width: 50rem) {
+  .card .title {
+    font-size: var(--sl-text-base) !important;
+  }
+}
