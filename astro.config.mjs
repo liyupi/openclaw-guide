@@ -5,6 +5,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.clawfather.cn',
   trailingSlash: 'never',
+  build: {
+    format: 'file',
+  },
   integrations: [
     sitemap(),
     starlight({

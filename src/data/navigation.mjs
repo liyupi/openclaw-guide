@@ -501,7 +501,7 @@ export const tabs = [
 ];
 
 export function getActiveTab(pathname) {
-  const clean = pathname.replace(/^\//, '').replace(/\/$/, '');
+  const clean = pathname.replace(/^\//, '').replace(/\/$/, '').replace(/\.html$/, '');
   for (const tab of tabs) {
     if (tab.pages.some(p => clean === p || clean.startsWith(p + '/'))) {
       return tab;
