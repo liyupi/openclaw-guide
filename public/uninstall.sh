@@ -752,13 +752,15 @@ do_uninstall() {
 uninstall_cli() {
   if has_cmd openclaw; then
     info "Running official uninstall..."
-    openclaw gateway stop 2>/dev/null || true
-    openclaw gateway uninstall 2>/dev/null || true
+    openclaw gateway stop  >/dev/null 2>&1 || true
+    ok "Gateway stopped"
+    openclaw gateway uninstall >/dev/null 2>&1 || true
+    ok "Gateway service removed"
   fi
 
-  has_cmd npm  && { npm rm -g openclaw 2>&1 | grep -v 'up to date' || true; }
+  has_cmd npm  && { npm rm -g openclaw  >/dev/null 2>&1 || true; }
   has_cmd pnpm && { pnpm remove -g openclaw >/dev/null 2>&1 || true; }
-  has_cmd bun  && { bun remove -g openclaw >/dev/null 2>&1 || true; }
+  has_cmd bun  && { bun remove -g openclaw  >/dev/null 2>&1 || true; }
 
   hash -r 2>/dev/null || true
   ok "CLI uninstalled"
