@@ -4,6 +4,19 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://www.clawfather.cn',
+  vite: {
+    plugins: [{
+      name: 'script-mime-types',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.endsWith('.ps1') || req.url?.endsWith('.sh')) {
+            res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          }
+          next();
+        });
+      },
+    }],
+  },
   integrations: [
     sitemap(),
     starlight({
