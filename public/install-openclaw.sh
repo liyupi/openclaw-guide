@@ -2,8 +2,8 @@
 #
 # OpenClaw 一键安装脚本 (macOS / Linux)
 # 用法:
-#   bash install-openclaw.sh
-#   curl -fsSL https://raw.githubusercontent.com/OpenClaw/install/main/install.sh | bash
+#   bash install-openclaw.sh [--version <版本号>]
+#   curl -fsSL https://raw.githubusercontent.com/OpenClaw/install/main/install.sh | bash -s -- --version 1.2.3
 #
 
 set -euo pipefail
@@ -50,6 +50,7 @@ prompt_read() {
 
 # ── 全局变量 ──
 
+OPENCLAW_VERSION="${OPENCLAW_VERSION:-}"
 REQUIRED_NODE_MAJOR=22
 NODE_BIN_DIR=""
 ARCH=$(uname -m)
@@ -556,7 +557,11 @@ _progress_bar() {
 
 step_install_openclaw() {
   step "步骤 4/6: 安装 OpenClaw"
-  info "正在安装 OpenClaw，请耐心等待..."
+  if [[ -n "$OPENCLAW_VERSION" ]]; then
+    info "正在安装 OpenClaw v${OPENCLAW_VERSION}，请耐心等待..."
+  else
+    info "正在安装 OpenClaw 最新版，请耐心等待..."
+  fi
 
   local log_file done_file
   log_file=$(mktemp)
@@ -565,7 +570,8 @@ step_install_openclaw() {
 
   (
     set +e
-    npm_install_global "openclaw@latest" > "$log_file" 2>&1
+    local pkg_spec="openclaw@${OPENCLAW_VERSION:-latest}"
+    npm_install_global "$pkg_spec" > "$log_file" 2>&1
     echo $? > "$done_file"
   ) &
 
@@ -762,7 +768,41 @@ step_onboard() {
 
 # ── 主函数 ──
 
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --version|-v)
+        if [[ -z "${2:-}" ]]; then
+          error "--version 需要指定版本号，例如: --version 1.2.3"
+          exit 1
+        fi
+        OPENCLAW_VERSION="$2"
+        shift 2
+        ;;
+      --help|-h)
+        echo "用法: bash install-openclaw.sh [选项]"
+        echo ""
+        echo "选项:"
+        echo "  --version, -v <版本号>  安装指定版本的 OpenClaw (例如: 1.2.3)"
+        echo "  --help, -h              显示帮助信息"
+        echo ""
+        echo "示例:"
+        echo "  bash install-openclaw.sh                    # 安装最新版"
+        echo "  bash install-openclaw.sh --version 1.2.3    # 安装指定版本"
+        echo "  OPENCLAW_VERSION=1.2.3 bash install-openclaw.sh  # 通过环境变量指定"
+        exit 0
+        ;;
+      *)
+        warn "未知参数: $1"
+        shift
+        ;;
+    esac
+  done
+}
+
 main() {
+  parse_args "$@"
+
   echo ""
   echo -e "${GREEN}🦞 OpenClaw 一键安装脚本${NC}"
   echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
@@ -772,7 +812,7 @@ main() {
   ensure_path
   local existing_ver
   existing_ver=$(openclaw -v 2>/dev/null || true)
-  if [[ -n "$existing_ver" ]]; then
+  if [[ -n "$existing_ver" && -z "$OPENCLAW_VERSION" ]]; then
     success "OpenClaw $existing_ver 已安装，无需重复安装"
     echo -e "\n${GREEN}🦞 你的龙虾已就位！${NC}\n"
     echo ""

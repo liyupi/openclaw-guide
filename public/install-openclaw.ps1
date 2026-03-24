@@ -3,14 +3,22 @@
   OpenClaw 一键安装脚本 (Windows)
 .DESCRIPTION
   自动检测并安装 Node.js v22+、Git，然后安装并配置 OpenClaw。
+.PARAMETER Version
+  指定安装的 OpenClaw 版本号（例如 1.2.3）。不指定则安装最新版。
 .NOTES
   用法:
     powershell -ExecutionPolicy Bypass -File install-openclaw.ps1
+    powershell -ExecutionPolicy Bypass -File install-openclaw.ps1 -Version 1.2.3
   在线一键安装（推荐，直接在当前窗口执行，安装后立即可用）:
     irm https://你的域名/install-openclaw.ps1 | iex
+  指定版本（通过环境变量）:
+    $env:OPENCLAW_VERSION='1.2.3'; irm https://你的域名/install-openclaw.ps1 | iex
   如果中文乱码，改用:
     & {$w=New-Object Net.WebClient;$w.Encoding=[Text.Encoding]::UTF8;iex $w.DownloadString('https://你的域名/install-openclaw.ps1')}
 #>
+param(
+    [string]$Version = ""
+)
 
 # ── 执行策略自修复：如果当前策略阻止脚本运行，自动以 Bypass 重启 ──
 if ($MyInvocation.MyCommand.Path) {
@@ -50,6 +58,7 @@ function Write-Step    { param($Msg) Write-Host "`n━━━ $Msg ━━━`n" -
 
 # ── 全局变量 ──
 
+$script:OpenClawVersion = if ($Version) { $Version } elseif ($env:OPENCLAW_VERSION) { $env:OPENCLAW_VERSION } else { "" }
 $script:NodeBinDir = $null
 $script:NvmManaged = $false
 $script:RequiredNodeMajor = 22
@@ -817,7 +826,8 @@ function Run-PnpmInstall {
     try {
         $psi = New-Object System.Diagnostics.ProcessStartInfo
         $psi.FileName = "cmd.exe"
-        $psi.Arguments = "/c `"$PnpmCmd`" add -g openclaw@latest"
+        $pkgSpec = if ($script:OpenClawVersion) { "openclaw@$($script:OpenClawVersion)" } else { "openclaw@latest" }
+        $psi.Arguments = "/c `"$PnpmCmd`" add -g $pkgSpec"
         $psi.UseShellExecute = $false
         $psi.RedirectStandardOutput = $true
         $psi.RedirectStandardError = $true
@@ -882,7 +892,11 @@ function Step-InstallOpenClaw {
         return $false
     }
 
-    Write-Info "正在安装 OpenClaw，请耐心等待..."
+    if ($script:OpenClawVersion) {
+        Write-Info "正在安装 OpenClaw v$($script:OpenClawVersion)，请耐心等待..."
+    } else {
+        Write-Info "正在安装 OpenClaw 最新版，请耐心等待..."
+    }
 
     $pnpmCmd = Get-PnpmCmd
     if (-not (Test-Path $pnpmCmd -ErrorAction SilentlyContinue)) {
@@ -1333,7 +1347,7 @@ function Main {
     if (-not $existingVer) {
         try { $existingVer = (& openclaw -v 2>$null).Trim() } catch {}
     }
-    if ($existingVer) {
+    if ($existingVer -and -not $script:OpenClawVersion) {
         if ($found) { Add-ToUserPath $found.Dir }
         Ensure-ExecutionPolicy
         Write-Ok "OpenClaw $existingVer 已安装，无需重复安装"
