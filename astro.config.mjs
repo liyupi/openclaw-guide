@@ -51,6 +51,7 @@ export default defineConfig({
       ],
       components: {
         Header: './src/overrides/Header.astro',
+        Footer: './src/overrides/Footer.astro',
       },
       expressiveCode: {
         themes: ['min-dark', 'min-light'],

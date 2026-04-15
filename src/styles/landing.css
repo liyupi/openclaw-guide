@@ -834,6 +834,16 @@ html[data-theme="light"] .oc-sponsor-logo.light-only { display: block; }
   margin-top: 12px; font-size: .8rem;
   color: var(--text-muted); opacity: .7;
 }
+.oc-footer .icp-beian {
+  margin-top: 16px; font-size: .8rem;
+  color: var(--text-muted); opacity: .6;
+}
+.oc-footer .icp-beian a {
+  color: var(--text-muted); text-decoration: none;
+}
+.oc-footer .icp-beian a:hover {
+  color: var(--cyan-bright); text-decoration: underline;
+}
 
 /* ===== Accessibility ===== */
 :focus-visible {
